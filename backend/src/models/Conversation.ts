@@ -5,11 +5,12 @@ interface IMessage {
     role: 'user' | 'assistant';
     content: string;
     subject?: string;
-    type?: 'question' | 'assignment_help' | 'exam_prep';
+    intent?: string;
     timestamp: Date;
     metadata?: {
         tokens?: number;
         model?: string;
+        confidence?: number;
     };
 }
 
@@ -34,14 +35,12 @@ const MessageSchema: Schema = new Schema(
         },
         content: { type: String, required: true },
         subject: String,
-        type: {
-            type: String,
-            enum: ['question', 'assignment_help', 'exam_prep'],
-        },
+        intent: String,
         timestamp: { type: Date, required: true },
         metadata: {
             tokens: Number,
             model: String,
+            confidence: Number,
         },
     },
     { _id: false }

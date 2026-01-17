@@ -3,10 +3,11 @@ import { v4 as uuidv4 } from 'uuid';
 import Conversation from '../models/Conversation.js';
 import { AuthRequest } from '../middleware/auth.js';
 import groq from '../config/groq.js';
+import { classifyMessage } from '../config/classifier.js';
 
 
 export const sendMessage = async (req: AuthRequest, res: Response) => {
-    const { content, subject } = req.body;
+    const { content, subject: manualSubject, intent: manualIntent } = req.body;
     const userId = req.user!.id;
 
     if (!content || !content.trim()) {
@@ -14,6 +15,11 @@ export const sendMessage = async (req: AuthRequest, res: Response) => {
     }
 
     try {
+        // Week 4: Classify message if no manual override
+        const classification = await classifyMessage(content);
+        const finalSubject = manualSubject || classification.subject;
+        const finalIntent = manualIntent || classification.intent;
+
         // Find latest active conversation or create new
         let conversation = await Conversation.findOne({
             userId,
@@ -34,9 +40,12 @@ export const sendMessage = async (req: AuthRequest, res: Response) => {
             messageId: uuidv4(),
             role: 'user' as const,
             content: content.trim(),
-            subject: subject || 'general',
-            type: 'question' as const,
+            subject: finalSubject,
+            intent: finalIntent,
             timestamp: new Date(),
+            metadata: {
+                confidence: classification.confidence
+            }
         };
 
         conversation.messages.push(message);
@@ -189,5 +198,54 @@ export const getAiResponse = async (req: AuthRequest, res: Response) => {
         console.error('Groq AI Error:', error);
         res.write(`data: ${JSON.stringify({ error: 'AI failed to respond' })}\n\n`);
         res.end();
+    }
+};
+
+export const updateMessageMetadata = async (req: AuthRequest, res: Response) => {
+    const { id, messageId } = req.params;
+    const { subject, intent } = req.body;
+    const userId = req.user!.id;
+
+    try {
+        const conversation = await Conversation.findOne({ _id: id, userId });
+        if (!conversation) return res.status(404).json({ error: 'Conversation not found' });
+
+        const message = conversation.messages.find(m => m.messageId === messageId);
+        if (!message) return res.status(404).json({ error: 'Message not found' });
+
+        if (subject) message.subject = subject;
+        if (intent) message.intent = intent;
+
+        await conversation.save();
+        res.json({ success: true, message });
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const getChatStats = async (req: AuthRequest, res: Response) => {
+    const userId = req.user!.id;
+
+    try {
+        const conversations = await Conversation.find({ userId });
+        const stats = {
+            subjects: {} as Record<string, number>,
+            intents: {} as Record<string, number>,
+            totalMessages: 0
+        };
+
+        conversations.forEach(conv => {
+            conv.messages.forEach(msg => {
+                if (msg.role === 'user') {
+                    stats.totalMessages++;
+                    if (msg.subject) stats.subjects[msg.subject] = (stats.subjects[msg.subject] || 0) + 1;
+                    if (msg.intent) stats.intents[msg.intent] = (stats.intents[msg.intent] || 0) + 1;
+                }
+            });
+        });
+
+        res.json(stats);
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
     }
 };

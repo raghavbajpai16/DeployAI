@@ -8,8 +8,20 @@ interface Message {
     role: 'user' | 'assistant';
     content: string;
     timestamp: string;
+    subject?: string;
+    intent?: string;
     isStreaming?: boolean;
 }
+
+const SUBJECTS = [
+    { id: 'Mathematics', emoji: '📐' },
+    { id: 'Science', emoji: '🔬' },
+    { id: 'Literature', emoji: '📚' },
+    { id: 'History', emoji: '🏺' },
+    { id: 'Computer Science', emoji: '💻' },
+    { id: 'Economics', emoji: '📊' },
+    { id: 'Psychology', emoji: '🧠' },
+];
 
 interface ChatWindowProps {
     token: string;
@@ -21,6 +33,7 @@ import { Send, Sparkles, User, AlertCircle } from 'lucide-react';
 export default function ChatWindow({ token, conversationId }: ChatWindowProps) {
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
+    const [selectedSubject, setSelectedSubject] = useState<string>('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -46,16 +59,28 @@ export default function ChatWindow({ token, conversationId }: ChatWindowProps) {
             role: 'user',
             content,
             timestamp: new Date().toISOString(),
+            subject: selectedSubject || undefined,
         };
         setMessages((prev) => [...prev, userMessage]);
 
         try {
             const response = await apiFetch<any>('/chat/message', {
                 method: 'POST',
-                body: JSON.stringify({ content, subject: 'general' }),
+                body: JSON.stringify({
+                    content,
+                    subject: selectedSubject || undefined
+                }),
             });
 
             if (!response.success) throw new Error(response.error || 'Failed to send message');
+
+            // Update user message with detected subject/intent from backend
+            const { message: savedMsg } = response.data.conversation;
+            setMessages((prev) => prev.map(m =>
+                m.messageId === userMessage.messageId
+                    ? { ...m, subject: savedMsg.subject, intent: savedMsg.intent }
+                    : m
+            ));
 
             const convId = response.data.conversation.id;
             const aiMessageId = (Date.now() + 1).toString();
@@ -128,6 +153,21 @@ export default function ChatWindow({ token, conversationId }: ChatWindowProps) {
         }
     };
 
+    const updateMessageSubject = async (messageId: string, subject: string) => {
+        if (!conversationId) return;
+        try {
+            const response = await apiFetch<any>(`/chat/conversations/${conversationId}/messages/${messageId}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ subject }),
+            });
+            if (response.success) {
+                setMessages(prev => prev.map(m => m.messageId === messageId ? { ...m, subject } : m));
+            }
+        } catch (err: any) {
+            console.error('Failed to update subject:', err);
+        }
+    };
+
     const handleKeyPress = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
@@ -175,11 +215,28 @@ export default function ChatWindow({ token, conversationId }: ChatWindowProps) {
 
                             <div className={`max-w-[75%] space-y-2 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
                                 <div
-                                    className={`inline-block px-5 py-3.5 rounded-[1.5rem] shadow-sm font-medium text-[15px] leading-relaxed ${msg.role === 'user'
-                                            ? 'bg-brand-600 text-white rounded-tr-none shadow-brand-500/10'
-                                            : 'bg-white border border-gray-100 text-gray-800 rounded-tl-none'
+                                    className={`inline-block px-5 py-3.5 rounded-[1.5rem] shadow-sm font-medium text-[15px] leading-relaxed relative group ${msg.role === 'user'
+                                        ? 'bg-brand-600 text-white rounded-tr-none shadow-brand-500/10'
+                                        : 'bg-white border border-gray-100 text-gray-800 rounded-tl-none'
                                         }`}
                                 >
+                                    {(msg.subject || msg.intent) && (
+                                        <div className={`absolute -top-6 ${msg.role === 'user' ? 'right-0' : 'left-0'} flex gap-1.5 opacity-100 transition-opacity duration-300 z-10`}>
+                                            {msg.subject && (
+                                                <button
+                                                    onClick={() => msg.role === 'user' && updateMessageSubject(msg.messageId, 'Other')}
+                                                    className="px-2 py-0.5 rounded-full bg-brand-100 text-brand-600 text-[10px] font-bold border border-brand-200 hover:bg-brand-200"
+                                                >
+                                                    {msg.subject}
+                                                </button>
+                                            )}
+                                            {msg.intent && (
+                                                <span className="px-2 py-0.5 rounded-full bg-purple-100 text-purple-600 text-[10px] font-bold border border-purple-200">
+                                                    {msg.intent}
+                                                </span>
+                                            )}
+                                        </div>
+                                    )}
                                     <p className="whitespace-pre-wrap">
                                         {msg.content}
                                         {msg.isStreaming && (
@@ -202,6 +259,31 @@ export default function ChatWindow({ token, conversationId }: ChatWindowProps) {
 
             {/* Input Area */}
             <div className="p-6 bg-white/50 backdrop-blur-md border-t border-gray-100">
+                {/* Subject Selector Pills */}
+                <div className="flex gap-2 overflow-x-auto pb-3 no-scrollbar scroll-smooth">
+                    <button
+                        onClick={() => setSelectedSubject('')}
+                        className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all flex-shrink-0 border ${selectedSubject === ''
+                            ? 'bg-brand-600 text-white border-brand-600 shadow-sm'
+                            : 'bg-white text-gray-500 border-gray-200 hover:border-brand-300'
+                            }`}
+                    >
+                        ✨ Auto-Detect
+                    </button>
+                    {SUBJECTS.map((sub) => (
+                        <button
+                            key={sub.id}
+                            onClick={() => setSelectedSubject(sub.id)}
+                            className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all flex-shrink-0 border ${selectedSubject === sub.id
+                                ? 'bg-brand-600 text-white border-brand-600 shadow-sm'
+                                : 'bg-white text-gray-500 border-gray-200 hover:border-brand-300'
+                                }`}
+                        >
+                            {sub.emoji} {sub.id}
+                        </button>
+                    ))}
+                </div>
+
                 {error && (
                     <div className="flex items-center gap-2 text-red-600 text-xs font-bold mb-4 bg-red-50 p-3 rounded-xl border border-red-100">
                         <AlertCircle size={14} />
