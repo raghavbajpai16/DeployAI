@@ -7,6 +7,10 @@ interface IMessage {
     subject?: string;
     type?: 'question' | 'assignment_help' | 'exam_prep';
     timestamp: Date;
+    metadata?: {
+        tokens?: number;
+        model?: string;
+    };
 }
 
 export interface IConversation extends Document {
@@ -35,6 +39,10 @@ const MessageSchema: Schema = new Schema(
             enum: ['question', 'assignment_help', 'exam_prep'],
         },
         timestamp: { type: Date, required: true },
+        metadata: {
+            tokens: Number,
+            model: String,
+        },
     },
     { _id: false }
 );

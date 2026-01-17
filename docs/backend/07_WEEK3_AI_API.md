@@ -28,8 +28,8 @@ Server-Sent Events (SSE) stream.
 
 ## Implementation Details
 
-- **Model:** gpt-4o-mini
-- **Streaming:** Enabled via OpenAI SDK
+- **Model:** llama-3.3-70b-versatile (via Groq)
+- **Streaming:** Enabled via Groq SDK
 - **Storage:** AI responses are appended to the `messages` array in the `conversations` collection upon completion of the stream.
 - **System Prompt:** "You are StudentMentor AI, a helpful and knowledgeable academic assistant. Provide clear, accurate, and encouraging help to students."
 

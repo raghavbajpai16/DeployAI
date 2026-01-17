@@ -2,7 +2,8 @@ import { Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import Conversation from '../models/Conversation.js';
 import { AuthRequest } from '../middleware/auth.js';
-import openai from '../config/openai.js';
+import groq from '../config/groq.js';
+
 
 export const sendMessage = async (req: AuthRequest, res: Response) => {
     const { content, subject } = req.body;
@@ -119,6 +120,7 @@ export const getConversation = async (req: AuthRequest, res: Response) => {
             .json({ error: error.message || 'Failed to fetch conversation' });
     }
 };
+
 export const getAiResponse = async (req: AuthRequest, res: Response) => {
     const { conversationId } = req.body;
     const userId = req.user!.id;
@@ -143,14 +145,16 @@ export const getAiResponse = async (req: AuthRequest, res: Response) => {
         res.setHeader('Cache-Control', 'no-cache');
         res.setHeader('Connection', 'keep-alive');
 
-        const stream = await openai.chat.completions.create({
-            model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+        console.log('Sending messages to Groq:', JSON.stringify(messages, null, 2));
+
+        const stream = await groq.chat.completions.create({
+            model: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile',
             messages: [
                 {
                     role: 'system',
                     content: 'You are StudentMentor AI, a helpful and knowledgeable academic assistant. Provide clear, accurate, and encouraging help to students.',
                 },
-                ...messages,
+                ...messages as any,
             ],
             stream: true,
         });
@@ -158,8 +162,10 @@ export const getAiResponse = async (req: AuthRequest, res: Response) => {
         let fullContent = '';
         for await (const chunk of stream) {
             const content = chunk.choices[0]?.delta?.content || '';
-            fullContent += content;
-            res.write(`data: ${JSON.stringify({ content })}\n\n`);
+            if (content) {
+                fullContent += content;
+                res.write(`data: ${JSON.stringify({ content })}\n\n`);
+            }
         }
 
         // Save AI response to DB
@@ -168,6 +174,9 @@ export const getAiResponse = async (req: AuthRequest, res: Response) => {
             role: 'assistant' as const,
             content: fullContent,
             timestamp: new Date(),
+            metadata: {
+                model: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile'
+            }
         };
 
         conversation.messages.push(aiMessage);
@@ -177,7 +186,7 @@ export const getAiResponse = async (req: AuthRequest, res: Response) => {
         res.write(`data: [DONE]\n\n`);
         res.end();
     } catch (error: any) {
-        console.error('AI Error:', error);
+        console.error('Groq AI Error:', error);
         res.write(`data: ${JSON.stringify({ error: 'AI failed to respond' })}\n\n`);
         res.end();
     }

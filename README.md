@@ -8,55 +8,74 @@ Phase 0 (MVP) focuses on building the core authentication and chat systems, allo
 
 ## Tech Stack
 
-- **Frontend**: Next.js, Tailwind CSS
-- **Backend**: Node.js, Express, TypeScript
-- **Database**: MongoDB
-- **AI**: OpenAI GPT-4o-mini
-- **Infrastructure**: Docker, GitHub Actions
+- **AI Integration**: Groq Llama 3 (Ultra-fast inference)
+- **Database**: MongoDB Atlas with Mongoose
+- **Infrastructure**: Docker Ready, CI/CD with GitHub Actions
 
-## Getting Started
+## 📅 Roadmap & Progress
 
-### Prerequisites
+### ✅ Week 1 & 2: Authentication & UI Foundation
+- Luxury Glassmorphic UI Design.
+- Robust JWT-based Authentication.
+- User Profile management.
 
-- Docker Desktop
+### ✅ Week 3: AI Core Integration (Current)
+- **High-Speed AI**: Integrated Groq SDK with Llama 3 models.
+- **Real-time Streaming**: Implemented Server-Sent Events (SSE) for instant typing feedback.
+- **Context Awareness**: Persistent conversation history stored in MongoDB.
+- **Smart Metadata**: Tracking token usage and model performance.
+
+## 🚀 Getting Started
+
+### 1. Prerequisites
 - Node.js 20+
-- MongoDB Atlas account (or local MongoDB)
+- MongoDB Atlas Account
+- Groq API Key (from [console.groq.com](https://console.groq.com))
 
-### Environment Setup
-
-1. Clone the repository.
-2. Copy `.env.example` to `.env` in the root and configure the variables.
-3. Refer to `docs/devops/02_ENVIRONMENT_SETUP.md` for detailed instructions.
-
-### Local Development
-
-#### Using Docker (Recommended)
-
+### 2. Installation
 ```bash
-docker-compose up -d
+# Clone the repo
+git clone https://github.com/Team-MyUniOne/MYUNIONEAI.git
+
+# Install Backend dependencies
+cd backend && npm install
+
+# Install Frontend dependencies
+cd ../frontend && npm install
 ```
 
-#### Manual Setup
+### 3. Environment Setup
+Create a `.env` in the `backend/` directory using `.env.example`:
+```env
+PORT=5000
+MONGODB_URI=your_mongodb_uri
+JWT_SECRET=your_32_char_secret
+GROQ_API_KEY=your_groq_key
+```
 
-Refer to the individual `README.md` files in the `backend/` and `frontend/` directories for manual setup steps.
+### 4. Running Locally
+```bash
+# Start Backend
+cd backend && npm run dev
 
-## Documentation
+# Start Frontend
+cd frontend && npm run dev
+```
 
-- [Database Schema](docs/database/01_DATABASE_SCHEMA.md)
-- [Environment Setup](docs/devops/02_ENVIRONMENT_SETUP.md)
-- [Database Operations](docs/database/03_DATABASE_OPERATIONS.md)
-- [GitHub Setup](docs/github/04_GITHUB_SETUP.md)
-- [Week 2 API Docs](docs/backend/05_WEEK2_API.md)
-- [Week 2 UI Docs](docs/frontend/06_WEEK2_UI.md)
-- [Week 2 Summary](WEEK_2_SUMMARY.md)
-- [Week 3 AI API Docs](docs/backend/07_WEEK3_AI_API.md)
-- [Week 3 Status](WEEK_3_STATUS.md)
+## ☁️ Deployment Ready
 
-## Contributing
+This project is configured for seamless deployment:
+- **Frontend**: Deploy to Vercel/Netlify. Ensure `NEXT_PUBLIC_API_URL` points to your backend.
+- **Backend**: Deploy to Railway.app/Render/Heroku. 
+- **Database**: Use MongoDB Atlas (Shared Cluster).
 
-Please read `CONTRIBUTING.md` for details on our code of conduct and the process for submitting pull requests.
+## 📄 Documentation
+Detailed technical docs can be found in the `/docs` directory.
+- [/docs/backend/07_WEEK3_AI_API.md](docs/backend/07_WEEK3_AI_API.md) - AI Integration Details.
+- [/docs/database/01_DATABASE_SCHEMA.md](docs/database/01_DATABASE_SCHEMA.md) - Schema Definitions.
 
-## License
+## 🤝 Contributing
+Contributions are welcome! Please follow the contribution guidelines.
 
-This project is licensed under the MIT License.
->>>>>>> 41000a7 (feat: complete week 1 & 2 implementation with premium UI styling)
+## ⚖️ License
+MIT License - 2026 StudentMentor Team.
