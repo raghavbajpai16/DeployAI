@@ -19,11 +19,19 @@ Phase 0 (MVP) focuses on building the core authentication and chat systems, allo
 - Robust JWT-based Authentication.
 - User Profile management.
 
-### ✅ Week 3: AI Core Integration (Current)
+### ✅ Week 3: AI Core Integration
 - **High-Speed AI**: Integrated Groq SDK with Llama 3 models.
 - **Real-time Streaming**: Implemented Server-Sent Events (SSE) for instant typing feedback.
 - **Context Awareness**: Persistent conversation history stored in MongoDB.
 - **Smart Metadata**: Tracking token usage and model performance.
+
+### ✅ Week 4: Subject Detection & Categorization (Current)
+- **Smart Subject Detection**: AI-based automatic detection of academic subjects using Groq Llama 3.
+- **Intent Classification**: Automatic message type classification (Question, Help, Explanation, etc.).
+- **Subject Selector UI**: Interactive horizontal pill selector for manual subject override.
+- **Confidence Scoring**: Track detection confidence for each classified message.
+- **Analytics & Stats**: Database tracking of usage statistics per user and subject.
+- **Auto-Detect Mode**: Default intelligent categorization powered by AI suggestions.
 
 ## 🚀 Getting Started
 
@@ -72,6 +80,7 @@ This project is configured for seamless deployment:
 ## 📄 Documentation
 Detailed technical docs can be found in the `/docs` directory.
 - [/docs/backend/07_WEEK3_AI_API.md](docs/backend/07_WEEK3_AI_API.md) - AI Integration Details.
+- [/docs/backend/08_WEEK4_CLASSIFICATION.md](docs/backend/08_WEEK4_CLASSIFICATION.md) - Subject Detection & Classification.
 - [/docs/database/01_DATABASE_SCHEMA.md](docs/database/01_DATABASE_SCHEMA.md) - Schema Definitions.
 
 ## 🤝 Contributing
