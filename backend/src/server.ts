@@ -35,30 +35,37 @@ app.get('/health', (req: Request, res: Response) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/chat', chatRoutes);
 
+// Export app for Vercel
+export default app;
+
 // 404 handler
 app.use('*', (req: Request, res: Response) => {
     res.status(404).json({ error: 'Route not found' });
 });
 
-// Start server
-const startServer = async () => {
-    try {
-        await connectDB();
-        app.listen(PORT, () => {
-            console.log(`\n✓ Server running on http://localhost:${PORT}`);
-            console.log(`✓ Environment: ${process.env.NODE_ENV}`);
-            console.log('\nAvailable endpoints:');
-            console.log('  POST   /api/auth/register');
-            console.log('  POST   /api/auth/login');
-            console.log('  GET    /api/auth/me');
-            console.log('  POST   /api/chat/message');
-            console.log('  GET    /api/chat/conversations');
-            console.log('  GET    /api/chat/conversations/:id\n');
-        });
-    } catch (error) {
-        console.error('✗ Failed to start server:', error);
-        process.exit(1);
-    }
-};
-
-startServer();
+// Start server (Only if not in Vercel/Production environment)
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+    const startServer = async () => {
+        try {
+            await connectDB();
+            app.listen(PORT, () => {
+                console.log(`\n✓ Server running on http://localhost:${PORT}`);
+                console.log(`✓ Environment: ${process.env.NODE_ENV}`);
+                console.log('\nAvailable endpoints:');
+                console.log('  POST   /api/auth/register');
+                console.log('  POST   /api/auth/login');
+                console.log('  GET    /api/auth/me');
+                console.log('  POST   /api/chat/message');
+                console.log('  GET    /api/chat/conversations');
+                console.log('  GET    /api/chat/conversations/:id\n');
+            });
+        } catch (error) {
+            console.error('✗ Failed to start server:', error);
+            process.exit(1);
+        }
+    };
+    startServer();
+} else {
+    // In production/Vercel, we still need to connect to DB
+    connectDB().catch(err => console.error('DB Connection Error:', err));
+}
