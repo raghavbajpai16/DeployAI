@@ -52,3 +52,7 @@ Thumbs.db
 # Secrets
 .env.*.key
 secret.txt
+
+# Prompts and Roadmaps
+WEEKS_3-12_PROMPTS.md
+*PROMPTS.md

@@ -11,6 +11,7 @@ interface IMessage {
         tokens?: number;
         model?: string;
         confidence?: number;
+        goalId?: string;
     };
 }
 
@@ -41,6 +42,7 @@ const MessageSchema: Schema = new Schema(
             tokens: Number,
             model: String,
             confidence: Number,
+            goalId: String,
         },
     },
     { _id: false }

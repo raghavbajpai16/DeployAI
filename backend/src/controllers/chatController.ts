@@ -7,7 +7,7 @@ import { classifyMessage } from '../config/classifier.js';
 
 
 export const sendMessage = async (req: AuthRequest, res: Response) => {
-    const { content, subject: manualSubject, intent: manualIntent } = req.body;
+    const { content, subject: manualSubject, intent: manualIntent, goalId } = req.body;
     const userId = req.user!.id;
 
     if (!content || !content.trim()) {
@@ -44,7 +44,8 @@ export const sendMessage = async (req: AuthRequest, res: Response) => {
             intent: finalIntent,
             timestamp: new Date(),
             metadata: {
-                confidence: classification.confidence
+                confidence: classification.confidence,
+                goalId: goalId || undefined
             }
         };
 

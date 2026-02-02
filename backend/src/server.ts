@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import connectDB from './config/database.js';
 import authRoutes from './routes/auth.js';
 import chatRoutes from './routes/chat.js';
+import goalRoutes from './routes/goal.js';
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ app.get('/health', (req: Request, res: Response) => {
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/goals', goalRoutes);
 
 // Export app for Vercel
 export default app;

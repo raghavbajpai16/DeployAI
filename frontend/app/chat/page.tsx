@@ -12,7 +12,7 @@ interface Conversation {
     messageCount: number;
 }
 
-import { LogOut, LayoutDashboard, MessageSquarePlus, Clock, Search } from 'lucide-react';
+import { LogOut, LayoutDashboard, MessageSquarePlus, Clock, Search, Target } from 'lucide-react';
 
 export default function ChatPage() {
     const router = useRouter();
@@ -78,7 +78,14 @@ export default function ChatPage() {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-6">
+                        <button
+                            onClick={() => router.push('/goals')}
+                            className="flex items-center gap-2 px-4 py-2 text-gray-500 font-bold text-sm hover:text-brand-600 transition-colors group"
+                        >
+                            <Target size={18} className="group-hover:scale-110 transition-transform" />
+                            Academic Goals
+                        </button>
                         <button
                             onClick={handleLogout}
                             className="flex items-center gap-2 px-4 py-2 text-gray-500 font-bold text-sm hover:text-red-500 transition-colors group"
