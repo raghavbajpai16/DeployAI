@@ -6,18 +6,24 @@ import {
     getAiResponse,
     updateMessageMetadata,
     getChatStats,
+    togglePublicStatus,
+    getPublicConversation,
 } from '../controllers/chatController.js';
 import { protect } from '../middleware/auth.js';
 
 const router = Router();
 
-router.use(protect); // All chat routes require auth
+// Public route
+router.get('/public/:id', getPublicConversation as any);
 
-router.post('/message', sendMessage);
-router.post('/ai', getAiResponse);
-router.get('/conversations', getConversations);
-router.get('/conversations/:id', getConversation);
-router.patch('/conversations/:id/messages/:messageId', updateMessageMetadata);
-router.get('/stats', getChatStats);
+router.use(protect as any); // All other chat routes require auth
+
+router.post('/message', sendMessage as any);
+router.post('/ai', getAiResponse as any);
+router.get('/conversations', getConversations as any);
+router.get('/conversations/:id', getConversation as any);
+router.post('/conversations/:id/public', togglePublicStatus as any);
+router.patch('/conversations/:id/messages/:messageId', updateMessageMetadata as any);
+router.get('/stats', getChatStats as any);
 
 export default router;

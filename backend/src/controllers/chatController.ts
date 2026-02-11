@@ -123,6 +123,7 @@ export const getConversation = async (req: AuthRequest, res: Response) => {
             messages: conversation.messages,
             createdAt: conversation.createdAt,
             lastMessageAt: conversation.lastMessageAt,
+            isPublic: conversation.isPublic,
         });
     } catch (error: any) {
         res
@@ -248,5 +249,51 @@ export const getChatStats = async (req: AuthRequest, res: Response) => {
         res.json(stats);
     } catch (error: any) {
         res.status(500).json({ error: error.message });
+    }
+};
+
+export const togglePublicStatus = async (req: AuthRequest, res: Response) => {
+    const { id } = req.params;
+    const userId = req.user!.id;
+    const { isPublic } = req.body;
+
+    try {
+        const conversation = await Conversation.findOne({ _id: id, userId });
+        if (!conversation) return res.status(404).json({ error: 'Conversation not found' });
+
+        conversation.isPublic = isPublic;
+        await conversation.save();
+
+        res.json({ success: true, isPublic: conversation.isPublic });
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const getPublicConversation = async (req: any, res: Response) => {
+    const { id } = req.params;
+
+    try {
+        const conversation = await Conversation.findById(id);
+
+        if (!conversation || !conversation.isPublic) {
+            return res.status(404).json({ error: 'Conversation not found or private' });
+        }
+
+        // Return limited data for public view
+        res.json({
+            id: conversation._id,
+            title: conversation.title,
+            messages: conversation.messages.map(m => ({
+                role: m.role,
+                content: m.content,
+                timestamp: m.timestamp
+            })),
+            createdAt: conversation.createdAt,
+            lastMessageAt: conversation.lastMessageAt,
+            isPublic: conversation.isPublic
+        });
+    } catch (error: any) {
+        res.status(500).json({ error: error.message || 'Failed to fetch conversation' });
     }
 };

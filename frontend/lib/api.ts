@@ -10,18 +10,18 @@ export const apiFetch = async <T = any>(
     endpoint: string,
     options: RequestInit = {}
 ): Promise<ApiResponse<T>> => {
-    const token =
-        typeof window !== 'undefined'
-            ? localStorage.getItem('accessToken')
-            : null;
+    let token: string | null = null;
+    if (typeof window !== 'undefined') {
+        token = localStorage.getItem('accessToken');
+    }
 
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
         'Content-Type': 'application/json',
-        ...options.headers,
+        ...(options.headers as Record<string, string>),
     };
 
     if (token) {
-        headers.Authorization = `Bearer ${token}`;
+        headers['Authorization'] = `Bearer ${token}`;
     }
 
     try {

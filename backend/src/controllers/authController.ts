@@ -18,7 +18,7 @@ export const register = async (req: AuthRequest, res: Response) => {
         }
 
         const user = new User({
-            email: email.toLowerCase(),
+            email: (email as string).toLowerCase(),
             passwordHash: password,
             firstName,
             lastName,
@@ -26,10 +26,15 @@ export const register = async (req: AuthRequest, res: Response) => {
 
         await user.save();
 
+        const secret = process.env.JWT_SECRET;
+        if (!secret) {
+            throw new Error('JWT_SECRET is not defined');
+        }
+
         const accessToken = jwt.sign(
             { id: user._id.toString(), email: user.email },
-            process.env.JWT_SECRET!,
-            { expiresIn: process.env.JWT_EXPIRY || '24h' }
+            secret,
+            { expiresIn: (process.env.JWT_EXPIRY || '24h') as any }
         );
 
         res.status(201).json({
@@ -55,7 +60,7 @@ export const login = async (req: AuthRequest, res: Response) => {
     }
 
     try {
-        const user = await User.findOne({ email: email.toLowerCase() }).select(
+        const user = await User.findOne({ email: (email as string).toLowerCase() }).select(
             '+passwordHash'
         );
         if (!user) {
@@ -67,10 +72,15 @@ export const login = async (req: AuthRequest, res: Response) => {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
+        const secret = process.env.JWT_SECRET;
+        if (!secret) {
+            throw new Error('JWT_SECRET is not defined');
+        }
+
         const accessToken = jwt.sign(
             { id: user._id.toString(), email: user.email },
-            process.env.JWT_SECRET!,
-            { expiresIn: process.env.JWT_EXPIRY || '24h' }
+            secret,
+            { expiresIn: (process.env.JWT_EXPIRY || '24h') as any }
         );
 
         res.json({
@@ -94,5 +104,31 @@ export const getMe = async (req: AuthRequest, res: Response) => {
         res.json({ user });
     } catch (error: any) {
         res.status(500).json({ error: 'Failed to fetch user' });
+    }
+};
+
+export const googleCallback = (req: any, res: Response) => {
+    try {
+        const user = req.user;
+        if (!user) {
+            return res.redirect(`${process.env.FRONTEND_URL}/login?error=auth_failed`);
+        }
+
+        const secret = process.env.JWT_SECRET;
+        if (!secret) {
+            throw new Error('JWT_SECRET is not defined');
+        }
+
+        const accessToken = jwt.sign(
+            { id: user._id.toString(), email: user.email },
+            secret,
+            { expiresIn: (process.env.JWT_EXPIRY || '24h') as any }
+        );
+
+        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+        res.redirect(`${frontendUrl}/auth/google/callback?token=${accessToken}`);
+    } catch (error) {
+        console.error('Google Auth Error:', error);
+        res.redirect(`${process.env.FRONTEND_URL}/login?error=server_error`);
     }
 };

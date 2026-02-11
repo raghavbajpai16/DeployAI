@@ -24,6 +24,7 @@ export interface IConversation extends Document {
     createdAt: Date;
     lastMessageAt: Date;
     isArchived: boolean;
+    isPublic: boolean;
 }
 
 const MessageSchema: Schema = new Schema(
@@ -57,6 +58,7 @@ const ConversationSchema: Schema = new Schema(
         keyTopics: [String],
         lastMessageAt: { type: Date, index: true },
         isArchived: { type: Boolean, default: false },
+        isPublic: { type: Boolean, default: false, index: true },
     },
     { timestamps: true }
 );

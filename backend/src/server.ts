@@ -1,3 +1,4 @@
+import './config/env.js'; // MUST be first
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -6,6 +7,10 @@ import connectDB from './config/database.js';
 import authRoutes from './routes/auth.js';
 import chatRoutes from './routes/chat.js';
 import goalRoutes from './routes/goal.js';
+import analyticsRoutes from './routes/analytics.js';
+import passport from 'passport';
+import './config/passport.js';
+
 
 dotenv.config();
 
@@ -22,6 +27,8 @@ app.use(
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(passport.initialize());
+
 
 // Health check
 app.get('/health', (req: Request, res: Response) => {
@@ -36,6 +43,7 @@ app.get('/health', (req: Request, res: Response) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/goals', goalRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 // Export app for Vercel
 export default app;

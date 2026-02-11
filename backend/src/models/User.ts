@@ -5,6 +5,7 @@ export interface IUser extends Document {
     email: string;
     passwordHash: string;
     googleId?: string;
+    avatar?: string;
     firstName: string;
     lastName: string;
     createdAt: Date;
@@ -27,14 +28,18 @@ const UserSchema: Schema = new Schema(
         },
         passwordHash: {
             type: String,
-            required: [true, 'Password required'],
+            required: function (this: any) { return !this.googleId; }, // Required only if not Google OAuth
             minlength: 6,
-            select: false, // Don't return by default
+            select: false,
         },
         googleId: {
             type: String,
             unique: true,
             sparse: true,
+        },
+        avatar: {
+            type: String,
+            default: '',
         },
         firstName: {
             type: String,
@@ -52,14 +57,19 @@ const UserSchema: Schema = new Schema(
 
 // Hash password before save
 UserSchema.pre('save', async function (next) {
-    if (!this.isModified('passwordHash')) return next();
-    this.passwordHash = await bcrypt.hash(this.passwordHash, 12);
+    const user = this as any; // Cast to any to access document properties easily
+    if (!user.isModified('passwordHash')) return next();
+
+    if (user.passwordHash) {
+        user.passwordHash = await bcrypt.hash(user.passwordHash, 12);
+    }
     next();
 });
 
 // Compare password method
 UserSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {
-    return bcrypt.compare(candidatePassword, this.passwordHash);
+    const user = this as any;
+    return bcrypt.compare(candidatePassword, user.passwordHash);
 };
 
 export default mongoose.model<IUser>('User', UserSchema);

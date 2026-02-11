@@ -12,12 +12,13 @@ interface Conversation {
     messageCount: number;
 }
 
-import { LogOut, LayoutDashboard, MessageSquarePlus, Clock, Search, Target } from 'lucide-react';
+import { LogOut, LayoutDashboard, MessageSquarePlus, Clock, Search, Target, User as UserIcon } from 'lucide-react';
 
 export default function ChatPage() {
     const router = useRouter();
     const [token, setToken] = useState<string | null>(null);
     const [conversations, setConversations] = useState<Conversation[]>([]);
+    const [selectedId, setSelectedId] = useState<string | null>(null);
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
@@ -80,11 +81,25 @@ export default function ChatPage() {
 
                     <div className="flex items-center gap-6">
                         <button
+                            onClick={() => router.push('/dashboard')}
+                            className="flex items-center gap-2 px-4 py-2 text-gray-500 font-bold text-sm hover:text-brand-600 transition-colors group"
+                        >
+                            <LayoutDashboard size={18} className="group-hover:scale-110 transition-transform" />
+                            Dashboard
+                        </button>
+                        <button
                             onClick={() => router.push('/goals')}
                             className="flex items-center gap-2 px-4 py-2 text-gray-500 font-bold text-sm hover:text-brand-600 transition-colors group"
                         >
                             <Target size={18} className="group-hover:scale-110 transition-transform" />
                             Academic Goals
+                        </button>
+                        <button
+                            onClick={() => router.push('/profile')}
+                            className="flex items-center gap-2 px-4 py-2 text-gray-500 font-bold text-sm hover:text-brand-600 transition-colors group"
+                        >
+                            <UserIcon size={18} className="group-hover:scale-110 transition-transform" />
+                            Profile
                         </button>
                         <button
                             onClick={handleLogout}
@@ -100,7 +115,14 @@ export default function ChatPage() {
             <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-8 flex gap-8">
                 {/* Modern Sidebar */}
                 <aside className="w-80 hidden lg:flex flex-col gap-6">
-                    <button className="btn-primary w-full flex items-center justify-center gap-2 active:scale-95 shadow-brand-500/10">
+                    <button
+                        onClick={() => {
+                            // Reset to new conversation
+                            // Ideally handled by passing null ID
+                            window.location.reload();
+                        }}
+                        className="btn-primary w-full flex items-center justify-center gap-2 active:scale-95 shadow-brand-500/10"
+                    >
                         <MessageSquarePlus size={18} />
                         New Consultation
                     </button>
@@ -132,12 +154,19 @@ export default function ChatPage() {
                                 conversations.map((conv) => (
                                     <div
                                         key={conv.id}
-                                        className="group p-4 bg-gray-50/50 hover:bg-white border border-transparent hover:border-brand-100 rounded-2xl cursor-pointer transition-all duration-300 shadow-sm hover:shadow-brand-500/5"
+                                        onClick={() => setSelectedId(conv.id)}
+                                        className={`group p-4 border rounded-2xl cursor-pointer transition-all duration-300 shadow-sm ${selectedId === conv.id
+                                            ? 'bg-brand-50 border-brand-200 shadow-brand-500/10'
+                                            : 'bg-gray-50/50 hover:bg-white border-transparent hover:border-brand-100 hover:shadow-brand-500/5'
+                                            }`}
                                     >
-                                        <p className="text-sm font-bold text-gray-800 truncate mb-1 group-hover:text-brand-600 transition-colors uppercase tracking-tight">{conv.title}</p>
+                                        <p className={`text-sm font-bold truncate mb-1 transition-colors uppercase tracking-tight ${selectedId === conv.id ? 'text-brand-600' : 'text-gray-800 group-hover:text-brand-600'
+                                            }`}>{conv.title}</p>
                                         <div className="flex items-center justify-between">
                                             <span className="text-[10px] font-bold text-gray-400">{conv.messageCount} Messages</span>
-                                            <span className="text-[10px] font-bold text-brand-500/50">2h ago</span>
+                                            <span className="text-[10px] font-bold text-brand-500/50">
+                                                {new Date(conv.lastMessageAt).toLocaleDateString()}
+                                            </span>
                                         </div>
                                     </div>
                                 ))
@@ -148,7 +177,7 @@ export default function ChatPage() {
 
                 {/* Primary Chat View */}
                 <section className="flex-1 min-w-0">
-                    <ChatWindow token={token} />
+                    <ChatWindow key={selectedId || 'new'} token={token} conversationId={selectedId || undefined} />
                 </section>
             </main>
         </div>

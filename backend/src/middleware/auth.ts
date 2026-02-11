@@ -27,7 +27,9 @@ export const protect = async (
         };
         (req as AuthRequest).user = decoded;
         next();
-    } catch (error) {
-        return res.status(401).json({ error: 'Token invalid or expired' });
+    } catch (error: any) {
+        console.error('Token verification failed:', error.message);
+        console.log('Token received:', token);
+        return res.status(401).json({ error: 'Token invalid or expired: ' + error.message });
     }
 };
