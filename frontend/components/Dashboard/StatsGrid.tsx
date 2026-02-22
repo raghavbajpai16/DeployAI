@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Goal, MessageSquare, Zap, Target } from 'lucide-react';

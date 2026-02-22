@@ -34,7 +34,10 @@ export default function DashboardPage() {
                     return;
                 }
 
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/analytics/dashboard`, {
+                const apiBase = process.env.NODE_ENV === 'production'
+                    ? '/api'
+                    : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+                const res = await fetch(`${apiBase}/analytics/dashboard`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
