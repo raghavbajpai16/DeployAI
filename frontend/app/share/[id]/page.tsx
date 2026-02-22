@@ -28,7 +28,9 @@ export default function PublicSharePage() {
     useEffect(() => {
         const fetchConversation = async () => {
             try {
-                const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+                const API_BASE = process.env.NODE_ENV === 'production'
+                    ? '/api'
+                    : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
                 const res = await fetch(`${API_BASE}/chat/public/${params.id}`);
 
                 if (res.ok) {
@@ -135,8 +137,8 @@ export default function PublicSharePage() {
                             <div className={`max-w-[80%] space-y-2 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
                                 <div
                                     className={`inline-block px-6 py-4 rounded-[2rem] shadow-sm font-medium text-[15px] leading-relaxed ${msg.role === 'user'
-                                            ? 'bg-brand-600 text-white rounded-tr-none shadow-brand-500/10'
-                                            : 'bg-white border border-gray-100 text-gray-800 rounded-tl-none'
+                                        ? 'bg-brand-600 text-white rounded-tr-none shadow-brand-500/10'
+                                        : 'bg-white border border-gray-100 text-gray-800 rounded-tl-none'
                                         }`}
                                 >
                                     <p className="whitespace-pre-wrap">{msg.content}</p>

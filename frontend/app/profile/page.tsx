@@ -18,7 +18,10 @@ export default function ProfilePage() {
             }
 
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/auth/me`, {
+                const apiBase = process.env.NODE_ENV === 'production'
+                    ? '/api'
+                    : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+                const res = await fetch(`${apiBase}/auth/me`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
 

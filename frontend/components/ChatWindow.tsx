@@ -134,7 +134,9 @@ export default function ChatWindow({ token, conversationId }: ChatWindowProps) {
             };
             setMessages((prev) => [...prev, placeholderAiMessage]);
 
-            const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+            const API_BASE = process.env.NODE_ENV === 'production'
+                ? '/api'
+                : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
             const aiResponse = await fetch(`${API_BASE}/chat/ai`, {
                 method: 'POST',
                 headers: {

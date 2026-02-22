@@ -1,9 +1,10 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function GoogleCallbackPage() {
+function GoogleCallbackContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -12,8 +13,10 @@ export default function GoogleCallbackPage() {
         if (token) {
             localStorage.setItem('accessToken', token);
 
-            // Fetch user data to store in localStorage
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+            const apiUrl = process.env.NODE_ENV === 'production'
+                ? '/api'
+                : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+
             fetch(`${apiUrl}/auth/me`, {
                 headers: { Authorization: `Bearer ${token}` }
             })
@@ -23,25 +26,15 @@ export default function GoogleCallbackPage() {
                         localStorage.setItem('user', JSON.stringify(data.user));
                         router.push('/dashboard');
                     } else {
-                        console.error('Failed to fetch user data');
                         router.push('/login?error=user_fetch_failed');
                     }
                 })
-                .catch((err) => {
-                    console.error('Auth error:', err);
+                .catch(() => {
                     router.push('/login?error=server_error');
                 });
-
         } else {
-            // No token found
             const error = searchParams.get('error');
-            if (error) {
-                // If backend redirected with error param
-                console.error('Auth failed:', error);
-            }
-            // If we are just landing here without token (and maybe without error param yet), wait or redirect
-            if (!searchParams.toString()) {
-                // Maybe user navigated here manually?
+            if (!searchParams.toString() || error) {
                 router.push('/login');
             }
         }
@@ -55,5 +48,17 @@ export default function GoogleCallbackPage() {
                 <p className="mt-4 text-zinc-400">Please wait while we log you in.</p>
             </div>
         </div>
+    );
+}
+
+export default function GoogleCallbackPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-zinc-950 text-white">
+                <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        }>
+            <GoogleCallbackContent />
+        </Suspense>
     );
 }

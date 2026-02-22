@@ -153,7 +153,12 @@ export default function AuthForm({ type, onSuccess }: AuthFormProps) {
 
             <button
                 type="button"
-                onClick={() => (window.location.href = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/auth/google`)}
+                onClick={() => {
+                    const apiBase = process.env.NODE_ENV === 'production'
+                        ? '/api'
+                        : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+                    window.location.href = `${apiBase}/auth/google`;
+                }}
                 className="w-full flex items-center justify-center gap-3 px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-all"
             >
                 <svg className="h-5 w-5" viewBox="0 0 24 24">
