@@ -9,6 +9,7 @@ function GoogleCallbackContent() {
     const searchParams = useSearchParams();
 
     useEffect(() => {
+        if (!searchParams) return;
         const token = searchParams.get('token');
         if (token) {
             localStorage.setItem('accessToken', token);

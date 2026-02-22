@@ -2,9 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Loader2, LayoutDashboard } from 'lucide-react';
-import StatsGrid from '../../components/Dashboard/StatsGrid';
-import ActivityChart from '../../components/Dashboard/ActivityChart';
-import SubjectCloud from '../../components/Dashboard/SubjectCloud';
+import dynamic from 'next/dynamic';
+
+const loadingSpinner = () => <div className="flex items-center justify-center h-40"><Loader2 className="w-6 h-6 text-blue-500 animate-spin" /></div>;
+
+const StatsGrid = dynamic(() => import('../../components/Dashboard/StatsGrid'), { ssr: false, loading: loadingSpinner });
+const ActivityChart = dynamic(() => import('../../components/Dashboard/ActivityChart'), { ssr: false, loading: loadingSpinner });
+const SubjectCloud = dynamic(() => import('../../components/Dashboard/SubjectCloud'), { ssr: false, loading: loadingSpinner });
 
 interface DashboardData {
     stats: {
@@ -28,7 +32,7 @@ export default function DashboardPage() {
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
-                const token = localStorage.getItem('token');
+                const token = localStorage.getItem('accessToken');
                 if (!token) {
                     router.push('/login');
                     return;
