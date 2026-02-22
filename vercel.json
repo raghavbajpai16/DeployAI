@@ -1,0 +1,25 @@
+{
+    "version": 2,
+    "framework": "nextjs",
+    "buildCommand": "cd frontend && npm install && npm run build",
+    "outputDirectory": "frontend/.next",
+    "installCommand": "cd frontend && npm install",
+    "rewrites": [
+        {
+            "source": "/api/auth/:path*",
+            "destination": "/api/auth/:path*"
+        },
+        {
+            "source": "/api/chat/:path*",
+            "destination": "/api/chat/:path*"
+        },
+        {
+            "source": "/api/goals/:path*",
+            "destination": "/api/goals/:path*"
+        },
+        {
+            "source": "/api/analytics/:path*",
+            "destination": "/api/analytics/:path*"
+        }
+    ]
+}

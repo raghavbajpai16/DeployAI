@@ -1,4 +1,9 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+// In production (Vercel), frontend and API are on the same domain — use relative path.
+// In local dev, point to the Express server.
+const API_BASE =
+    process.env.NODE_ENV === 'production'
+        ? '/api'
+        : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 export interface ApiResponse<T = any> {
     success?: boolean;
