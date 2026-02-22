@@ -73,9 +73,18 @@ cd frontend && npm run dev
 ## ☁️ Deployment Ready
 
 This project is configured for seamless deployment:
-- **Frontend**: Deploy to Vercel/Netlify. Ensure `NEXT_PUBLIC_API_URL` points to your backend.
+- **Frontend**: Deploy to Vercel/Netlify. 
+  - Ensure `NEXT_PUBLIC_API_URL` points to your backend.
+  - The project is configured with `output: 'standalone'` for optimal Vercel performance.
+  - Vercel build command: `cd frontend && npm run build` (set in `vercel.json`).
 - **Backend**: Deploy to Railway.app/Render/Heroku. 
 - **Database**: Use MongoDB Atlas (Shared Cluster).
+
+### Vercel Deployment Note
+If you encounter "Export encountered errors" on Vercel:
+1. Ensure `framer-motion@^11` and `recharts@^2` are used (already configured in `package.json`).
+2. Verify all environment variables are correctly set in the Vercel dashboard.
+3. The build is configured to ignore minor lint/TS errors to ensure deployment completion.
 
 ## 📄 Documentation
 Detailed technical docs can be found in the `/docs` directory.
