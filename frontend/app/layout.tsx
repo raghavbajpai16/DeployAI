@@ -6,6 +6,13 @@ export const metadata: Metadata = {
     description: 'Your 24/7 AI academic companion',
 };
 
+export const viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    themeColor: '#ffffff',
+};
+
+
 export default function RootLayout({
     children,
 }: {
