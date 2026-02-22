@@ -4,9 +4,6 @@ import './globals.css';
 export const metadata: Metadata = {
     title: 'StudentMentor AI',
     description: 'Your 24/7 AI academic companion',
-    icons: {
-        icon: '🤖',
-    },
 };
 
 export default function RootLayout({
