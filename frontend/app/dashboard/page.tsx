@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Loader2, LayoutDashboard } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import { apiFetch } from '@/lib/api';
 
 const loadingSpinner = () => <div className="flex items-center justify-center h-40"><Loader2 className="w-6 h-6 text-blue-500 animate-spin" /></div>;
 
@@ -31,34 +32,13 @@ export default function DashboardPage() {
 
     useEffect(() => {
         const fetchDashboardData = async () => {
-            try {
-                const token = localStorage.getItem('accessToken');
-                if (!token) {
-                    router.push('/login');
-                    return;
-                }
-
-                const apiBase = process.env.NODE_ENV === 'production'
-                    ? '/api'
-                    : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
-                const res = await fetch(`${apiBase}/analytics/dashboard`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (res.ok) {
-                    const jsonData = await res.json();
-                    setData(jsonData);
-                } else {
-                    console.error('Failed to fetch dashboard data');
-                    if (res.status === 401) router.push('/login');
-                }
-            } catch (error) {
-                console.error('Error fetching dashboard:', error);
-            } finally {
-                setLoading(false);
+            const response = await apiFetch<DashboardData>('/analytics/dashboard');
+            if (response.success && response.data) {
+                setData(response.data);
+            } else if (response.error?.includes('401')) {
+                router.push('/login');
             }
+            setLoading(false);
         };
 
         fetchDashboardData();

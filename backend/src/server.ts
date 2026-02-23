@@ -1,6 +1,11 @@
 import './config/env.js'; // MUST be first
+import { validateEnv } from './config/validateEnv.js';
+validateEnv(); // Critical: Validate before anything else
+
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
+import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import connectDB from './config/database.js';
@@ -12,29 +17,50 @@ import passport from 'passport';
 import './config/passport.js';
 
 
-dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 
-// Middleware
+// Task 5: Request Timeout & Crash Protection
+app.use((req, res, next) => {
+    res.setTimeout(25000, () => {
+        res.status(408).send('Request Timeout');
+    });
+    next();
+});
+
+// Capture Global Failures
+process.on('unhandledRejection', (reason) => {
+    console.error('✗ UNHANDLED REJECTION:', reason);
+    process.exit(1);
+});
+
+process.on('uncaughtException', (error) => {
+    console.error('✗ UNCAUGHT EXCEPTION:', error);
+    process.exit(1);
+});
+
+// Security Middleware
+app.use(helmet());
 app.use(
     cors({
-        origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+        origin: process.env.FRONTEND_URL,
         credentials: true,
     })
 );
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(passport.initialize());
 
 
-// Health check
-app.get('/health', (req: Request, res: Response) => {
-    res.json({
-        status: 'OK',
-        timestamp: new Date().toISOString(),
+// Production Health Check
+app.get('/api/health', (req: Request, res: Response) => {
+    const isConnected = mongoose.connection.readyState === 1;
+    res.status(isConnected ? 200 : 503).json({
+        status: 'ok',
+        database: isConnected ? 'connected' : 'disconnected',
         environment: process.env.NODE_ENV,
     });
 });
@@ -45,37 +71,24 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/goals', goalRoutes);
 app.use('/api/analytics', analyticsRoutes);
 
-// Export app for Vercel
-export default app;
-
 // 404 handler
 app.use('*', (req: Request, res: Response) => {
     res.status(404).json({ error: 'Route not found' });
 });
 
-// Start server (Only if not in Vercel/Production environment)
-if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
-    const startServer = async () => {
-        try {
-            await connectDB();
-            app.listen(PORT, () => {
-                console.log(`\n✓ Server running on http://localhost:${PORT}`);
-                console.log(`✓ Environment: ${process.env.NODE_ENV}`);
-                console.log('\nAvailable endpoints:');
-                console.log('  POST   /api/auth/register');
-                console.log('  POST   /api/auth/login');
-                console.log('  GET    /api/auth/me');
-                console.log('  POST   /api/chat/message');
-                console.log('  GET    /api/chat/conversations');
-                console.log('  GET    /api/chat/conversations/:id\n');
-            });
-        } catch (error) {
-            console.error('✗ Failed to start server:', error);
-            process.exit(1);
-        }
-    };
-    startServer();
-} else {
-    // In production/Vercel, we still need to connect to DB
-    connectDB().catch(err => console.error('DB Connection Error:', err));
-}
+// Strict Start Sequence for Render
+const startServer = async () => {
+    try {
+        await connectDB();
+        app.listen(PORT, () => {
+            console.log(`\n✓ Production Server active on port ${PORT}`);
+        });
+    } catch (error) {
+        console.error('✗ Server failed to start:', error);
+        process.exit(1);
+    }
+};
+
+startServer();
+
+export default app;

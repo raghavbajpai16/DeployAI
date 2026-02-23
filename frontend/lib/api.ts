@@ -1,9 +1,5 @@
-// In production (Vercel), frontend and API are on the same domain — use relative path.
-// In local dev, point to the Express server.
-const API_BASE =
-    process.env.NODE_ENV === 'production'
-        ? '/api'
-        : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+// In local dev and production, point to the Express server via environment variable.
+export const API_BASE = (process.env.NEXT_PUBLIC_API_URL as string).replace(/\/$/, "");
 
 export interface ApiResponse<T = any> {
     success?: boolean;
@@ -33,6 +29,7 @@ export const apiFetch = async <T = any>(
         const response = await fetch(`${API_BASE}${endpoint}`, {
             ...options,
             headers,
+            credentials: 'include',
         });
 
         const data = await response.json();

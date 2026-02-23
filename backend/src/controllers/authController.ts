@@ -34,8 +34,16 @@ export const register = async (req: AuthRequest, res: Response) => {
         const accessToken = jwt.sign(
             { id: user._id.toString(), email: user.email },
             secret,
-            { expiresIn: (process.env.JWT_EXPIRY || '24h') as any }
+            { expiresIn: process.env.JWT_EXPIRY as any }
         );
+
+        // Task 1: Enforce Cookie-Only JWT Strategy
+        res.cookie('token', accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'none',
+            maxAge: Number(process.env.JWT_EXPIRY) * 1000
+        });
 
         res.status(201).json({
             success: true,
@@ -45,7 +53,6 @@ export const register = async (req: AuthRequest, res: Response) => {
                 firstName: user.firstName,
                 lastName: user.lastName,
             },
-            accessToken,
         });
     } catch (error: any) {
         res.status(500).json({ error: error.message || 'Registration failed' });
@@ -80,8 +87,16 @@ export const login = async (req: AuthRequest, res: Response) => {
         const accessToken = jwt.sign(
             { id: user._id.toString(), email: user.email },
             secret,
-            { expiresIn: (process.env.JWT_EXPIRY || '24h') as any }
+            { expiresIn: process.env.JWT_EXPIRY as any }
         );
+
+        // Task 1: Enforce Cookie-Only JWT Strategy
+        res.cookie('token', accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'none',
+            maxAge: Number(process.env.JWT_EXPIRY) * 1000
+        });
 
         res.json({
             success: true,
@@ -91,7 +106,6 @@ export const login = async (req: AuthRequest, res: Response) => {
                 firstName: user.firstName,
                 lastName: user.lastName,
             },
-            accessToken,
         });
     } catch (error: any) {
         res.status(500).json({ error: error.message || 'Login failed' });
@@ -122,13 +136,29 @@ export const googleCallback = (req: any, res: Response) => {
         const accessToken = jwt.sign(
             { id: user._id.toString(), email: user.email },
             secret,
-            { expiresIn: (process.env.JWT_EXPIRY || '24h') as any }
+            { expiresIn: process.env.JWT_EXPIRY as any }
         );
 
-        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-        res.redirect(`${frontendUrl}/auth/google/callback?token=${accessToken}`);
+        // Task 1 & 7: Enforce Cookie-Only JWT Strategy + Redirect to Dashboard
+        res.cookie('token', accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'none',
+            maxAge: Number(process.env.JWT_EXPIRY) * 1000
+        });
+
+        res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
     } catch (error) {
         console.error('Google Auth Error:', error);
         res.redirect(`${process.env.FRONTEND_URL}/login?error=server_error`);
     }
+};
+
+export const logout = (req: AuthRequest, res: Response) => {
+    res.clearCookie('token', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'none'
+    });
+    res.json({ success: true, message: 'Logged out successfully' });
 };

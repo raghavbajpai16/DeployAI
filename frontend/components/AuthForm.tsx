@@ -9,6 +9,7 @@ interface AuthFormProps {
 }
 
 import { Mail, Lock, User as UserIcon, ArrowRight, Loader2 } from 'lucide-react';
+import { API_BASE } from '@/lib/api';
 
 export default function AuthForm({ type, onSuccess }: AuthFormProps) {
     const [formData, setFormData] = useState({
@@ -43,10 +44,11 @@ export default function AuthForm({ type, onSuccess }: AuthFormProps) {
 
         setLoading(false);
 
-        if (response.success && response.data?.accessToken) {
-            localStorage.setItem('accessToken', response.data.accessToken);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
-            onSuccess(response.data.accessToken);
+        if (response.success) {
+            if (response.data?.user) {
+                localStorage.setItem('user', JSON.stringify(response.data.user));
+            }
+            onSuccess(response.data?.accessToken || '');
         } else {
             setError(response.error || 'Something went wrong');
         }
@@ -154,10 +156,7 @@ export default function AuthForm({ type, onSuccess }: AuthFormProps) {
             <button
                 type="button"
                 onClick={() => {
-                    const apiBase = process.env.NODE_ENV === 'production'
-                        ? '/api'
-                        : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
-                    window.location.href = `${apiBase}/auth/google`;
+                    window.location.href = `${API_BASE}/auth/google`;
                 }}
                 className="w-full flex items-center justify-center gap-3 px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-all"
             >

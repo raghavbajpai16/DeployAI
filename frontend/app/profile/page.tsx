@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { User, Mail, Calendar, LogOut, Loader2 } from 'lucide-react';
+import { apiFetch } from '@/lib/api';
 
 export default function ProfilePage() {
     const router = useRouter();
@@ -11,32 +12,13 @@ export default function ProfilePage() {
 
     useEffect(() => {
         const fetchProfile = async () => {
-            const token = localStorage.getItem('accessToken');
-            if (!token) {
+            const response = await apiFetch<any>('/auth/me');
+            if (response.success && response.data) {
+                setUser(response.data.user);
+            } else {
                 router.push('/login');
-                return;
             }
-
-            try {
-                const apiBase = process.env.NODE_ENV === 'production'
-                    ? '/api'
-                    : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
-                const res = await fetch(`${apiBase}/auth/me`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-
-                if (res.ok) {
-                    const data = await res.json();
-                    setUser(data.user);
-                } else {
-                    localStorage.removeItem('accessToken');
-                    router.push('/login');
-                }
-            } catch (error) {
-                console.error('Error fetching profile:', error);
-            } finally {
-                setLoading(false);
-            }
+            setLoading(false);
         };
 
         fetchProfile();

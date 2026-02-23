@@ -12,12 +12,12 @@ export const protect = async (
 ) => {
     let token: string | null = null;
 
-    if (req.headers.authorization?.startsWith('Bearer')) {
-        token = req.headers.authorization.split(' ')[1];
+    if (req.cookies?.token) {
+        token = req.cookies.token;
     }
 
     if (!token) {
-        return res.status(401).json({ error: 'No token provided' });
+        return res.status(401).json({ error: 'Authentication required' });
     }
 
     try {
@@ -29,7 +29,7 @@ export const protect = async (
         next();
     } catch (error: any) {
         console.error('Token verification failed:', error.message);
-        console.log('Token received:', token);
+
         return res.status(401).json({ error: 'Token invalid or expired: ' + error.message });
     }
 };

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { apiFetch } from '@/lib/api';
+import { apiFetch, API_BASE } from '@/lib/api';
 
 interface Message {
     messageId: string;
@@ -134,9 +134,6 @@ export default function ChatWindow({ token, conversationId }: ChatWindowProps) {
             };
             setMessages((prev) => [...prev, placeholderAiMessage]);
 
-            const API_BASE = process.env.NODE_ENV === 'production'
-                ? '/api'
-                : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
             const aiResponse = await fetch(`${API_BASE}/chat/ai`, {
                 method: 'POST',
                 headers: {
@@ -144,6 +141,7 @@ export default function ChatWindow({ token, conversationId }: ChatWindowProps) {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                 },
                 body: JSON.stringify({ conversationId: convId }),
+                credentials: 'include',
             });
 
             if (!aiResponse.ok) throw new Error('AI request failed');

@@ -24,7 +24,7 @@ export const classifyMessage = async (content: string): Promise<ClassificationRe
         `;
 
         const response = await groq.chat.completions.create({
-            model: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile',
+            model: process.env.GROQ_MODEL as string,
             messages: [
                 { role: 'system', content: 'You are a precise classification assistant. Return ONLY valid JSON.' },
                 { role: 'user', content: prompt }

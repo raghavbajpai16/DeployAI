@@ -159,7 +159,7 @@ export const getAiResponse = async (req: AuthRequest, res: Response) => {
         console.log('Sending messages to Groq:', JSON.stringify(messages, null, 2));
 
         const stream = await groq.chat.completions.create({
-            model: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile',
+            model: process.env.GROQ_MODEL as string,
             messages: [
                 {
                     role: 'system',
@@ -186,7 +186,7 @@ export const getAiResponse = async (req: AuthRequest, res: Response) => {
             content: fullContent,
             timestamp: new Date(),
             metadata: {
-                model: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile'
+                model: process.env.GROQ_MODEL as string
             }
         };
 

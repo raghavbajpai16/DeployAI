@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { Sparkles, User, LayoutDashboard, Calendar, Clock, Lock } from 'lucide-react';
 import Link from 'next/link';
+import { apiFetch } from '@/lib/api';
 
 interface Message {
     role: 'user' | 'assistant';
@@ -27,24 +28,13 @@ export default function PublicSharePage() {
 
     useEffect(() => {
         const fetchConversation = async () => {
-            try {
-                const API_BASE = process.env.NODE_ENV === 'production'
-                    ? '/api'
-                    : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
-                const res = await fetch(`${API_BASE}/chat/public/${params.id}`);
-
-                if (res.ok) {
-                    const data = await res.json();
-                    setConversation(data);
-                } else {
-                    const errData = await res.json();
-                    setError(errData.error || 'Failed to load conversation');
-                }
-            } catch (err) {
-                setError('Network error');
-            } finally {
-                setLoading(false);
+            const response = await apiFetch<PublicConversation>(`/chat/public/${params.id}`);
+            if (response.success && response.data) {
+                setConversation(response.data);
+            } else {
+                setError(response.error || 'Failed to load conversation');
             }
+            setLoading(false);
         };
 
         if (params.id) {
