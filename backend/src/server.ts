@@ -1,6 +1,7 @@
 import './config/env.js'; // MUST be first
 import { validateEnv } from './config/validateEnv.js';
 validateEnv(); // Critical: Validate before anything else
+console.log('NODE_ENV:', process.env.NODE_ENV);
 
 import express, { Request, Response } from 'express';
 import cors from 'cors';
