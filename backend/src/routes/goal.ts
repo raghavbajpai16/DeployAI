@@ -10,12 +10,12 @@ import { protect } from '../middleware/auth.js';
 
 const router = Router();
 
-router.use(protect);
+router.use(protect as any);
 
-router.post('/', createGoal);
-router.get('/', getGoals);
-router.patch('/:id', updateGoal);
-router.delete('/:id', deleteGoal);
-router.patch('/:id/progress', updateProgress);
+router.post('/', createGoal as any);
+router.get('/', getGoals as any);
+router.patch('/:id', updateGoal as any);
+router.delete('/:id', deleteGoal as any);
+router.patch('/:id/progress', updateProgress as any);
 
 export default router;

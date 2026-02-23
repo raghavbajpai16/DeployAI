@@ -4,8 +4,8 @@ import { protect } from '../middleware/auth.js';
 
 const router = Router();
 
-router.use(protect);
+router.use(protect as any);
 
-router.get('/dashboard', getDashboardStats);
+router.get('/dashboard', getDashboardStats as any);
 
 export default router;
