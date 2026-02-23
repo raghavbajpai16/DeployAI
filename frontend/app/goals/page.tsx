@@ -25,19 +25,18 @@ export default function GoalsPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const token = localStorage.getItem('accessToken');
-        const userData = localStorage.getItem('user');
+        const verifyAuth = async () => {
+            const response = await apiFetch('/auth/me');
+            if (response.success && response.data?.user) {
+                setUser(response.data.user);
+                localStorage.setItem('user', JSON.stringify(response.data.user));
+                fetchGoals();
+            } else {
+                router.push('/login');
+            }
+        };
 
-        if (!token) {
-            router.push('/login');
-            return;
-        }
-
-        if (userData) {
-            setUser(JSON.parse(userData));
-        }
-
-        fetchGoals();
+        verifyAuth();
     }, [router]);
 
     const fetchGoals = async () => {
@@ -93,8 +92,8 @@ export default function GoalsPage() {
         setIsModalOpen(false);
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem('accessToken');
+    const handleLogout = async () => {
+        await apiFetch('/auth/logout', { method: 'POST' });
         localStorage.removeItem('user');
         router.push('/login');
     };

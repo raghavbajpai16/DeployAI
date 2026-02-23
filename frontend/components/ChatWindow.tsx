@@ -24,13 +24,12 @@ const SUBJECTS = [
 ];
 
 interface ChatWindowProps {
-    token: string;
     conversationId?: string;
 }
 
 import { Send, Sparkles, User, AlertCircle, Share, Check } from 'lucide-react';
 
-export default function ChatWindow({ token, conversationId }: ChatWindowProps) {
+export default function ChatWindow({ conversationId }: ChatWindowProps) {
     const [isPublic, setIsPublic] = useState(false);
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
@@ -138,7 +137,6 @@ export default function ChatWindow({ token, conversationId }: ChatWindowProps) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                 },
                 body: JSON.stringify({ conversationId: convId }),
                 credentials: 'include',

@@ -24,8 +24,8 @@ export default function ProfilePage() {
         fetchProfile();
     }, [router]);
 
-    const handleLogout = () => {
-        localStorage.removeItem('accessToken');
+    const handleLogout = async () => {
+        await apiFetch('/auth/logout', { method: 'POST' });
         localStorage.removeItem('user');
         router.push('/login');
     };

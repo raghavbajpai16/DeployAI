@@ -5,7 +5,7 @@ import { apiFetch } from '@/lib/api';
 
 interface AuthFormProps {
     type: 'login' | 'register';
-    onSuccess: (token: string) => void;
+    onSuccess: () => void;
 }
 
 import { Mail, Lock, User as UserIcon, ArrowRight, Loader2 } from 'lucide-react';
@@ -48,7 +48,7 @@ export default function AuthForm({ type, onSuccess }: AuthFormProps) {
             if (response.data?.user) {
                 localStorage.setItem('user', JSON.stringify(response.data.user));
             }
-            onSuccess(response.data?.accessToken || '');
+            onSuccess();
         } else {
             setError(response.error || 'Something went wrong');
         }

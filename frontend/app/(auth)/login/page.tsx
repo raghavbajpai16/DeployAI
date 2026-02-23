@@ -8,8 +8,8 @@ export default function LoginPage() {
     const router = useRouter();
 
     useEffect(() => {
-        const token = localStorage.getItem('accessToken');
-        if (token) {
+        const user = localStorage.getItem('user');
+        if (user) {
             router.replace('/chat');
         }
     }, [router]);

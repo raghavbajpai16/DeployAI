@@ -16,44 +16,41 @@ import { LogOut, LayoutDashboard, MessageSquarePlus, Clock, Search, Target, User
 
 export default function ChatPage() {
     const router = useRouter();
-    const [token, setToken] = useState<string | null>(null);
     const [conversations, setConversations] = useState<Conversation[]>([]);
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const accessToken = localStorage.getItem('accessToken');
-        const userData = localStorage.getItem('user');
+        const verifyAuth = async () => {
+            const response = await apiFetch('/auth/me');
+            if (response.success && response.data?.user) {
+                setUser(response.data.user);
+                localStorage.setItem('user', JSON.stringify(response.data.user));
+                fetchConversations();
+            } else {
+                router.push('/login');
+            }
+            setLoading(false);
+        };
 
-        if (!accessToken) {
-            router.push('/login');
-            return;
-        }
-
-        setToken(accessToken);
-        if (userData) {
-            setUser(JSON.parse(userData));
-        }
-
-        fetchConversations(accessToken);
-        setLoading(false);
+        verifyAuth();
     }, [router]);
 
-    const fetchConversations = async (token: string) => {
+    const fetchConversations = async () => {
         const response = await apiFetch<Conversation[]>('/chat/conversations');
         if (response.success && response.data) {
             setConversations(response.data);
         }
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem('accessToken');
+    const handleLogout = async () => {
+        await apiFetch('/auth/logout', { method: 'POST' });
         localStorage.removeItem('user');
         router.push('/login');
     };
 
-    if (loading || !token) {
+    if (loading || !user) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-background gap-4">
                 <div className="w-12 h-12 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" />
@@ -177,7 +174,7 @@ export default function ChatPage() {
 
                 {/* Primary Chat View */}
                 <section className="flex-1 min-w-0">
-                    <ChatWindow key={selectedId || 'new'} token={token} conversationId={selectedId || undefined} />
+                    <ChatWindow key={selectedId || 'new'} conversationId={selectedId || undefined} />
                 </section>
             </main>
         </div>
