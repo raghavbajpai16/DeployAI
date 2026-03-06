@@ -239,15 +239,15 @@ export default function ChatWindow({ conversationId }: ChatWindowProps) {
     };
 
     return (
-        <div className="flex flex-col h-[calc(100vh-160px)] glass-card rounded-[2rem] overflow-hidden border border-white/40 shadow-premium">
+        <div className="flex flex-col h-[calc(100vh-160px)] glass-card rounded-[2.5rem] overflow-hidden border border-[var(--border-color)] shadow-premium transition-colors duration-300">
             {/* Header Area */}
-            <div className="px-6 py-4 border-b border-gray-100 bg-white/30 backdrop-blur-md flex items-center justify-between">
+            <div className="px-6 py-4 border-b border-[var(--border-color)] bg-[var(--card-bg)] backdrop-blur-md flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-brand-50 rounded-xl flex items-center justify-center text-brand-600">
+                    <div className="w-10 h-10 bg-brand-50 dark:bg-brand-600/10 rounded-xl flex items-center justify-center text-brand-600 dark:text-brand-400">
                         <Sparkles size={20} />
                     </div>
                     <div>
-                        <h3 className="font-bold text-gray-900 leading-tight">AI Academic Mentor</h3>
+                        <h3 className="font-bold text-[var(--foreground)] leading-tight">AI Academic Mentor</h3>
                         <p className="text-xs font-semibold text-green-500 uppercase tracking-wider">Online & Ready</p>
                     </div>
                 </div>
@@ -270,14 +270,14 @@ export default function ChatWindow({ conversationId }: ChatWindowProps) {
 
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto px-6 py-8 space-y-6 bg-[#fcfdfe]">
+            <div className="flex-1 overflow-y-auto px-6 py-8 space-y-6 bg-[var(--background)]">
                 {messages.length === 0 ? (
                     <div className="h-full flex flex-col items-center justify-center text-center animate-in fade-in duration-1000">
-                        <div className="w-20 h-20 bg-brand-50 rounded-3xl flex items-center justify-center text-brand-500 mb-6 shadow-premium">
+                        <div className="w-20 h-20 bg-brand-50 dark:bg-brand-600/10 rounded-3xl flex items-center justify-center text-brand-500 dark:text-brand-400 mb-6 shadow-premium">
                             <Sparkles size={40} />
                         </div>
-                        <h2 className="text-2xl font-extrabold text-gray-900 mb-2">How can I help you today?</h2>
-                        <p className="text-gray-500 max-w-sm font-medium">
+                        <h2 className="text-2xl font-extrabold text-[var(--foreground)] mb-2">How can I help you today?</h2>
+                        <p className="text-gray-500 dark:text-gray-400 max-w-sm font-medium">
                             I can help you with study schedules, complex topics, or proofreading your essays.
                         </p>
                     </div>
@@ -287,7 +287,7 @@ export default function ChatWindow({ conversationId }: ChatWindowProps) {
                             key={msg.messageId}
                             className={`flex items-start gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'} animate-in slide-in-from-bottom-2 duration-500`}
                         >
-                            <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center shadow-sm ${msg.role === 'user' ? 'bg-brand-600 text-white' : 'bg-white border border-gray-100 text-brand-600'
+                            <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center shadow-sm ${msg.role === 'user' ? 'bg-brand-600 text-white' : 'bg-[var(--card-bg)] border border-[var(--border-color)] text-brand-600'
                                 }`}>
                                 {msg.role === 'user' ? <User size={18} /> : <Sparkles size={18} />}
                             </div>
@@ -296,7 +296,7 @@ export default function ChatWindow({ conversationId }: ChatWindowProps) {
                                 <div
                                     className={`inline-block px-5 py-3.5 rounded-[1.5rem] shadow-sm font-medium text-[15px] leading-relaxed relative group ${msg.role === 'user'
                                         ? 'bg-brand-600 text-white rounded-tr-none shadow-brand-500/10'
-                                        : 'bg-white border border-gray-100 text-gray-800 rounded-tl-none'
+                                        : 'bg-[var(--card-bg)] border border-[var(--border-color)] text-[var(--foreground)] rounded-tl-none'
                                         }`}
                                 >
                                     {(msg.subject || msg.intent) && (
@@ -337,14 +337,14 @@ export default function ChatWindow({ conversationId }: ChatWindowProps) {
             </div>
 
             {/* Input Area */}
-            <div className="p-6 bg-white/50 backdrop-blur-md border-t border-gray-100">
+            <div className="p-6 bg-[var(--card-bg)] backdrop-blur-md border-t border-[var(--border-color)]">
                 {/* Subject Selector Pills */}
                 <div className="flex gap-2 overflow-x-auto pb-3 no-scrollbar scroll-smooth">
                     <button
                         onClick={() => setSelectedSubject('')}
                         className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all flex-shrink-0 border ${selectedSubject === ''
                             ? 'bg-brand-600 text-white border-brand-600 shadow-sm'
-                            : 'bg-white text-gray-500 border-gray-200 hover:border-brand-300'
+                            : 'bg-[var(--background)] text-gray-500 border-[var(--border-color)] hover:border-brand-300 dark:hover:border-brand-500'
                             }`}
                     >
                         ✨ Auto-Detect
@@ -355,7 +355,7 @@ export default function ChatWindow({ conversationId }: ChatWindowProps) {
                             onClick={() => setSelectedSubject(sub.id)}
                             className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all flex-shrink-0 border ${selectedSubject === sub.id
                                 ? 'bg-brand-600 text-white border-brand-600 shadow-sm'
-                                : 'bg-white text-gray-500 border-gray-200 hover:border-brand-300'
+                                : 'bg-[var(--background)] text-gray-500 border-[var(--border-color)] hover:border-brand-300 dark:hover:border-brand-500'
                                 }`}
                         >
                             {sub.emoji} {sub.id}

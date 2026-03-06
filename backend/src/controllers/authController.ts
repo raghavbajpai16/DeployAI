@@ -191,7 +191,7 @@ export const googleCallback = (req: any, res: Response) => {
             maxAge: maxAgeMs
         });
 
-        res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
+        res.redirect(`${process.env.FRONTEND_URL}/chat`);
     } catch (error) {
         console.error('Google Auth Error:', error);
         res.redirect(`${process.env.FRONTEND_URL}/login?error=server_error`);

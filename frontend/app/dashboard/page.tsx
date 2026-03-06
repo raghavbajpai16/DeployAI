@@ -111,7 +111,7 @@ export default function DashboardPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-[#f8fafc]">
+        <div className="min-h-screen bg-[var(--background)] transition-colors duration-300">
             <Navbar />
 
             <main className="max-w-7xl mx-auto px-6 pt-32 pb-20 space-y-12">
@@ -122,16 +122,16 @@ export default function DashboardPage() {
                             <LayoutDashboard className="w-8 h-8" />
                         </div>
                         <div>
-                            <h1 className="text-4xl font-black text-gray-900 tracking-tight leading-none">
+                            <h1 className="text-4xl font-black text-[var(--foreground)] tracking-tight leading-none">
                                 Insights <span className="text-brand-600">Overview</span>
                             </h1>
-                            <p className="text-gray-500 font-medium mt-2">Visualizing your academic growth journey</p>
+                            <p className="text-gray-500 dark:text-gray-400 font-medium mt-2">Visualizing your academic growth journey</p>
                         </div>
                     </div>
 
-                    <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-brand-50 rounded-full border border-brand-100">
-                        <Sparkles size={14} className="text-brand-600" />
-                        <span className="text-[10px] font-extrabold text-brand-700 uppercase tracking-widest">Premium Student Portal</span>
+                    <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-brand-50 dark:bg-brand-600/10 rounded-full border border-brand-100 dark:border-brand-900/30 text-brand-700 dark:text-brand-400">
+                        <Sparkles size={14} />
+                        <span className="text-[10px] font-extrabold uppercase tracking-widest">Premium Student Portal</span>
                     </div>
                 </div>
 
@@ -147,7 +147,7 @@ export default function DashboardPage() {
                                 <div
                                     key={action.path}
                                     onClick={() => router.push(action.path)}
-                                    className="glass-card group p-8 rounded-[2.5rem] border border-white/40 hover:scale-[1.02] hover:shadow-xl hover:shadow-brand-500/5 transition-all duration-500 cursor-pointer relative overflow-hidden"
+                                    className="glass-card group p-8 rounded-[2.5rem] border border-[var(--border-color)] hover:scale-[1.02] hover:shadow-xl hover:shadow-brand-500/5 transition-all duration-500 cursor-pointer relative overflow-hidden"
                                 >
                                     <div className="absolute top-0 right-0 w-24 h-24 bg-brand-600/5 rounded-bl-[5rem] -mr-8 -mt-8 group-hover:bg-brand-600/10 transition-colors" />
 
@@ -156,15 +156,15 @@ export default function DashboardPage() {
                                     </div>
 
                                     {action.badge && (
-                                        <span className="absolute top-8 right-8 px-3 py-1 bg-white/80 backdrop-blur-md rounded-full text-[10px] font-black text-brand-600 uppercase tracking-widest border border-brand-100 shadow-sm">
+                                        <span className="absolute top-8 right-8 px-3 py-1 bg-[var(--background)] rounded-full text-[10px] font-black text-brand-600 dark:text-brand-400 uppercase tracking-widest border border-[var(--border-color)] shadow-sm">
                                             {action.badge}
                                         </span>
                                     )}
 
-                                    <h3 className="text-xl font-black text-gray-900 mb-2 tracking-tight group-hover:text-brand-600 transition-colors">{action.title}</h3>
-                                    <p className="text-gray-500 font-medium text-sm leading-relaxed mb-6">{action.desc}</p>
+                                    <h3 className="text-xl font-black text-[var(--foreground)] mb-2 tracking-tight group-hover:text-brand-600 transition-colors">{action.title}</h3>
+                                    <p className="text-gray-500 dark:text-gray-400 font-medium text-sm leading-relaxed mb-6">{action.desc}</p>
 
-                                    <div className="flex items-center gap-2 text-brand-600 font-bold text-xs uppercase tracking-widest group-hover:translate-x-1 transition-transform">
+                                    <div className="flex items-center gap-2 text-brand-600 dark:text-brand-400 font-bold text-xs uppercase tracking-widest group-hover:translate-x-1 transition-transform">
                                         Enter Service
                                         <ArrowRight size={14} />
                                     </div>
@@ -188,7 +188,7 @@ export default function DashboardPage() {
                         <div className="flex flex-col gap-10">
                             <SubjectCloud subjects={data.stats.topSubjects} />
 
-                            <div className="glass-card p-8 rounded-[2.5rem] bg-gradient-to-br from-brand-600 to-brand-700 text-white shadow-xl relative overflow-hidden group">
+                            <div className="glass-card p-8 rounded-[2.5rem] bg-gradient-to-br from-brand-600 to-brand-700 text-white shadow-xl relative overflow-hidden group border-none">
                                 <Sparkles className="absolute top-[-20px] right-[-20px] w-32 h-32 text-white/10 group-hover:scale-125 transition-transform duration-1000" />
                                 <h3 className="text-xl font-black mb-4 tracking-tight">Daily Inspiration</h3>
                                 <p className="text-brand-50/80 font-medium leading-relaxed italic mb-6 relative z-10">

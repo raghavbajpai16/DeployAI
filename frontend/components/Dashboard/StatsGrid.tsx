@@ -21,14 +21,14 @@ const StatCard = ({ title, value, icon: Icon, color, delay }: any) => (
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay }}
-        className="bg-white/5 backdrop-blur-lg border border-white/10 p-6 rounded-2xl flex items-center gap-4 hover:border-white/20 transition-all group"
+        className="glass-card border border-[var(--border-color)] p-6 rounded-2xl flex items-center gap-4 hover:border-brand-500/30 transition-all group"
     >
         <div className={`p-3 rounded-xl ${color} bg-opacity-20 group-hover:scale-110 transition-transform`}>
             <Icon className={`w-6 h-6 ${color.replace('bg-', 'text-')}`} />
         </div>
         <div>
-            <h3 className="text-zinc-400 text-sm font-medium">{title}</h3>
-            <p className="text-2xl font-bold text-white mt-1">{value}</p>
+            <h3 className="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-widest">{title}</h3>
+            <p className="text-3xl font-black text-[var(--foreground)] mt-1">{value}</p>
         </div>
     </motion.div>
 );

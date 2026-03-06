@@ -57,7 +57,7 @@ export default function ChatPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#f8fafc] flex flex-col">
+        <div className="min-h-screen bg-[var(--background)] transition-colors duration-300 flex flex-col pt-16">
             <Navbar />
 
             <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-8 flex gap-8">
@@ -75,9 +75,9 @@ export default function ChatPage() {
                         New Consultation
                     </button>
 
-                    <div className="glass-card rounded-3xl p-6 flex-1 flex flex-col gap-6 overflow-hidden">
+                    <div className="glass-card rounded-3xl p-6 flex-1 flex flex-col gap-6 overflow-hidden border-[var(--border-color)]">
                         <div className="flex items-center justify-between">
-                            <h2 className="font-extrabold text-gray-900 tracking-tight">Recent Sessions</h2>
+                            <h2 className="font-extrabold text-[var(--foreground)] tracking-tight">Recent Sessions</h2>
                             <Clock size={16} className="text-gray-400" />
                         </div>
 
@@ -86,7 +86,7 @@ export default function ChatPage() {
                             <input
                                 type="text"
                                 placeholder="Search archives..."
-                                className="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-100 rounded-xl text-xs font-semibold focus:bg-white focus:border-brand-500 transition-all outline-none"
+                                className="w-full pl-9 pr-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-[var(--border-color)] rounded-xl text-xs font-semibold focus:bg-white dark:focus:bg-gray-700 focus:border-brand-500 transition-all outline-none text-[var(--foreground)]"
                             />
                         </div>
 
@@ -104,15 +104,15 @@ export default function ChatPage() {
                                         key={conv.id}
                                         onClick={() => setSelectedId(conv.id)}
                                         className={`group p-4 border rounded-2xl cursor-pointer transition-all duration-300 shadow-sm ${selectedId === conv.id
-                                            ? 'bg-brand-50 border-brand-200 shadow-brand-500/10'
-                                            : 'bg-gray-50/50 hover:bg-white border-transparent hover:border-brand-100 hover:shadow-brand-500/5'
+                                            ? 'bg-brand-50 dark:bg-brand-600/10 border-brand-200 dark:border-brand-900 shadow-brand-500/10'
+                                            : 'bg-gray-50/50 dark:bg-gray-800/50 hover:bg-white dark:hover:bg-gray-800 border-transparent hover:border-brand-100/50 hover:shadow-brand-500/5'
                                             }`}
                                     >
-                                        <p className={`text-sm font-bold truncate mb-1 transition-colors uppercase tracking-tight ${selectedId === conv.id ? 'text-brand-600' : 'text-gray-800 group-hover:text-brand-600'
+                                        <p className={`text-sm font-bold truncate mb-1 transition-colors uppercase tracking-tight ${selectedId === conv.id ? 'text-brand-600 dark:text-brand-400' : 'text-gray-800 dark:text-gray-200 group-hover:text-brand-600 dark:group-hover:text-brand-400'
                                             }`}>{conv.title}</p>
                                         <div className="flex items-center justify-between">
                                             <span className="text-[10px] font-bold text-gray-400">{conv.messageCount} Messages</span>
-                                            <span className="text-[10px] font-bold text-brand-500/50">
+                                            <span className="text-[10px] font-bold text-brand-500/50 dark:text-brand-400/30">
                                                 {new Date(conv.lastMessageAt).toLocaleDateString()}
                                             </span>
                                         </div>

@@ -108,39 +108,39 @@ export default function GoalsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#f8fafc]">
+        <div className="min-h-screen bg-[var(--background)] transition-colors duration-300">
             <Navbar />
 
             <main className="max-w-7xl mx-auto px-6 py-12 pt-32">
                 {/* Stats Summary */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
                     <div className="glass-card p-8 rounded-[2.5rem] flex items-center gap-6">
-                        <div className="w-16 h-16 bg-brand-50 rounded-3xl flex items-center justify-center text-brand-600">
+                        <div className="w-16 h-16 bg-brand-50 dark:bg-brand-600/10 rounded-3xl flex items-center justify-center text-brand-600 dark:text-brand-400">
                             <Target size={32} />
                         </div>
                         <div>
                             <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Total Goals</p>
-                            <h3 className="text-3xl font-black text-gray-900">{goals.length}</h3>
+                            <h3 className="text-3xl font-black text-[var(--foreground)]">{goals.length}</h3>
                         </div>
                     </div>
 
                     <div className="glass-card p-8 rounded-[2.5rem] flex items-center gap-6">
-                        <div className="w-16 h-16 bg-green-50 rounded-3xl flex items-center justify-center text-green-600">
+                        <div className="w-16 h-16 bg-green-50 dark:bg-green-600/10 rounded-3xl flex items-center justify-center text-green-600 dark:text-green-400">
                             <Trophy size={32} />
                         </div>
                         <div>
                             <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Completed</p>
-                            <h3 className="text-3xl font-black text-gray-900">{completedGoals}</h3>
+                            <h3 className="text-3xl font-black text-[var(--foreground)]">{completedGoals}</h3>
                         </div>
                     </div>
 
                     <div className="glass-card p-8 rounded-[2.5rem] flex items-center gap-6">
-                        <div className="w-16 h-16 bg-orange-50 rounded-3xl flex items-center justify-center text-orange-600">
+                        <div className="w-16 h-16 bg-orange-50 dark:bg-orange-600/10 rounded-3xl flex items-center justify-center text-orange-600 dark:text-orange-400">
                             <TrendingUp size={32} />
                         </div>
                         <div>
                             <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Avg Progress</p>
-                            <h3 className="text-3xl font-black text-gray-900">{avgProgress}%</h3>
+                            <h3 className="text-3xl font-black text-[var(--foreground)]">{avgProgress}%</h3>
                         </div>
                     </div>
                 </div>
@@ -148,8 +148,8 @@ export default function GoalsPage() {
                 {/* Section Header */}
                 <div className="flex justify-between items-center mb-10">
                     <div>
-                        <h2 className="text-3xl font-black text-gray-900 tracking-tight mb-1">Active Milestones</h2>
-                        <p className="text-gray-500 font-medium">Track and update your learning objectives</p>
+                        <h2 className="text-3xl font-black text-[var(--foreground)] tracking-tight mb-1">Active Milestones</h2>
+                        <p className="text-gray-500 dark:text-gray-400 font-medium">Track and update your learning objectives</p>
                     </div>
                     <button
                         onClick={() => handleOpenModal()}
@@ -162,12 +162,12 @@ export default function GoalsPage() {
 
                 {/* Goals Grid */}
                 {goals.length === 0 ? (
-                    <div className="glass-card rounded-[3rem] py-32 flex flex-col items-center justify-center text-center px-6">
-                        <div className="w-24 h-24 bg-gray-50 rounded-[2.5rem] flex items-center justify-center text-gray-200 mb-8">
+                    <div className="glass-card rounded-[3rem] py-32 flex flex-col items-center justify-center text-center px-6 border-[var(--border-color)]">
+                        <div className="w-24 h-24 bg-gray-50 dark:bg-gray-800 rounded-[2.5rem] flex items-center justify-center text-gray-200 dark:text-gray-700 mb-8">
                             <Flame size={48} />
                         </div>
-                        <h3 className="text-2xl font-black text-gray-900 mb-2">No goals set yet</h3>
-                        <p className="text-gray-500 font-medium max-w-sm mb-10">
+                        <h3 className="text-2xl font-black text-[var(--foreground)] mb-2">No goals set yet</h3>
+                        <p className="text-gray-500 dark:text-gray-400 font-medium max-w-sm mb-10">
                             What are you planning to master this week? Set your first goal to start tracking progress.
                         </p>
                         <button

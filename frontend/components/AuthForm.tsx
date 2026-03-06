@@ -59,8 +59,8 @@ export default function AuthForm({ type, onSuccess }: AuthFormProps) {
             {type === 'register' && (
                 <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                        <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                            <UserIcon size={16} className="text-brand-500" />
+                        <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                            <UserIcon size={14} className="text-brand-500" />
                             First Name
                         </label>
                         <input
@@ -74,8 +74,8 @@ export default function AuthForm({ type, onSuccess }: AuthFormProps) {
                         />
                     </div>
                     <div className="space-y-2">
-                        <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                            <UserIcon size={16} className="text-brand-500" />
+                        <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                            <UserIcon size={14} className="text-brand-500" />
                             Last Name
                         </label>
                         <input
@@ -92,8 +92,8 @@ export default function AuthForm({ type, onSuccess }: AuthFormProps) {
             )}
 
             <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                    <Mail size={16} className="text-brand-500" />
+                <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                    <Mail size={14} className="text-brand-500" />
                     Email Address
                 </label>
                 <input
@@ -108,8 +108,8 @@ export default function AuthForm({ type, onSuccess }: AuthFormProps) {
             </div>
 
             <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                    <Lock size={16} className="text-brand-500" />
+                <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                    <Lock size={14} className="text-brand-500" />
                     Password
                 </label>
                 <input
@@ -146,10 +146,10 @@ export default function AuthForm({ type, onSuccess }: AuthFormProps) {
 
             <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-gray-200"></div>
+                    <div className="w-full border-t border-[var(--border-color)]"></div>
                 </div>
-                <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                <div className="relative flex justify-center text-xs">
+                    <span className="px-3 bg-[var(--card-bg)] text-gray-500 font-bold uppercase tracking-widest">Or continue with</span>
                 </div>
             </div>
 
@@ -158,7 +158,7 @@ export default function AuthForm({ type, onSuccess }: AuthFormProps) {
                 onClick={() => {
                     window.location.href = `${API_BASE}/auth/google`;
                 }}
-                className="w-full flex items-center justify-center gap-3 px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-all"
+                className="w-full h-12 flex items-center justify-center gap-3 px-4 border border-[var(--border-color)] shadow-sm text-sm font-bold rounded-xl text-[var(--foreground)] bg-[var(--background)] hover:bg-gray-50 dark:hover:bg-gray-800 transition-all active:scale-95"
             >
                 <svg className="h-5 w-5" viewBox="0 0 24 24">
                     <path

@@ -19,34 +19,41 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[#f8fafc] relative overflow-hidden px-4 py-20">
-            {/* Abstract Background Shapes */}
-            <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-200/40 rounded-full blur-[120px]" />
-            <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand-200/40 rounded-full blur-[120px]" />
+        <div className="min-h-screen flex items-center justify-center bg-[var(--background)] transition-colors duration-300 relative overflow-hidden px-4 py-20">
+            {/* Dynamic Abstract Background Elements */}
+            <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-purple-500/5 dark:bg-purple-500/10 rounded-full blur-[120px] animate-pulse" />
+            <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-brand-500/5 dark:bg-brand-500/10 rounded-full blur-[120px] animate-pulse delay-1000" />
 
             <div className="w-full max-w-md relative z-10">
                 <div className="text-center mb-10">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-2xl shadow-premium mb-6 animate-bounce-slow">
-                        <span className="text-3xl">🚀</span>
+                    <div className="inline-flex items-center justify-center w-20 h-20 bg-white dark:bg-gray-800 rounded-3xl shadow-premium mb-8 overflow-hidden group border border-[var(--border-color)]">
+                        <span className="text-4xl group-hover:rotate-12 transition-transform duration-500">🚀</span>
                     </div>
-                    <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight mb-3">
-                        Student<span className="text-brand-600">Mentor</span>
+                    <h1 className="text-5xl font-black text-[var(--foreground)] tracking-tighter mb-4 italic">
+                        Mentor<span className="text-brand-600">AI</span>
                     </h1>
-                    <p className="text-gray-500 font-medium">Start your academic journey today.</p>
+                    <p className="text-gray-500 dark:text-gray-400 font-bold uppercase tracking-[0.2em] text-[10px]">
+                        Join the Academic Evolution
+                    </p>
                 </div>
 
-                <div className="glass-card rounded-[2rem] p-8 md:p-10 border border-white/40 shadow-premium">
+                <div className="glass-card rounded-[3rem] p-10 border border-[var(--border-color)] shadow-premium relative bg-[var(--card-bg)]">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-brand-600/5 rounded-bl-[4rem] -mr-4 -mt-4" />
                     <AuthForm type="register" onSuccess={handleSuccess} />
 
-                    <div className="mt-8 text-center">
-                        <p className="text-gray-500 text-sm font-medium">
-                            Already have an account?{' '}
-                            <a href="/login" className="text-brand-600 hover:text-brand-700 font-bold transition-colors">
-                                Sign in instead
+                    <div className="mt-10 text-center border-t border-[var(--border-color)] pt-8">
+                        <p className="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-widest">
+                            Known to us?{' '}
+                            <a href="/login" className="text-brand-600 dark:text-brand-400 hover:scale-105 inline-block transition-transform font-black">
+                                Reveal Identity
                             </a>
                         </p>
                     </div>
                 </div>
+
+                <p className="mt-10 text-center text-[10px] font-black text-gray-400 dark:text-gray-600 uppercase tracking-[0.3em]">
+                    START YOUR JOURNEY • PHASE 1 • INITIALIZED
+                </p>
             </div>
         </div>
     );

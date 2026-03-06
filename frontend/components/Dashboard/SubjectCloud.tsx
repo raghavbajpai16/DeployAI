@@ -15,9 +15,9 @@ export default function SubjectCloud({ subjects }: SubjectProps) {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="bg-white/5 backdrop-blur-lg border border-white/10 p-6 rounded-2xl"
+            className="glass-card border border-[var(--border-color)] p-8 rounded-[2.5rem] shadow-premium transition-colors"
         >
-            <h3 className="text-lg font-semibold text-white mb-6">Top Subjects</h3>
+            <h3 className="text-xl font-black text-[var(--foreground)] mb-6 tracking-tight">Top Interests</h3>
             <div className="flex flex-wrap gap-3">
                 {subjects.map((item, index) => {
                     const size = 1 + (item.count / maxCount) * 0.5; // Scale between 1 and 1.5rem
@@ -28,14 +28,13 @@ export default function SubjectCloud({ subjects }: SubjectProps) {
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                             transition={{ delay: 0.4 + index * 0.1 }}
-                            className="relative group cursor-default"
+                            className="group cursor-default"
                         >
                             <div
-                                className="px-4 py-2 rounded-full bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 text-emerald-300 hover:border-emerald-500/60 transition-all flex items-center gap-2"
-                                style={{ fontSize: `${size}rem` }}
+                                className="px-4 py-2 rounded-xl bg-brand-50 dark:bg-brand-600/10 border border-brand-100 dark:border-brand-900/30 text-brand-600 dark:text-brand-400 hover:scale-105 transition-all flex items-center gap-2 shadow-sm"
                             >
-                                <span className="font-medium text-sm">{item.subject}</span>
-                                <span className="bg-emerald-500/20 text-xs px-2 py-0.5 rounded-full text-emerald-200">
+                                <span className="font-bold text-xs uppercase tracking-wider">{item.subject}</span>
+                                <span className="bg-brand-600/10 dark:bg-brand-400/10 text-[10px] px-2 py-0.5 rounded-lg font-black">
                                     {item.count}
                                 </span>
                             </div>
@@ -44,7 +43,7 @@ export default function SubjectCloud({ subjects }: SubjectProps) {
                 })}
 
                 {subjects.length === 0 && (
-                    <p className="text-zinc-500 italic">No subjects detected yet. Start chatting!</p>
+                    <p className="text-gray-400 italic text-sm text-center w-full py-4 uppercase font-bold tracking-widest">No subjects detected yet.</p>
                 )}
             </div>
         </motion.div>

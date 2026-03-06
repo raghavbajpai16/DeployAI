@@ -1,102 +1,105 @@
 import Link from 'next/link';
-import { Sparkles, ArrowRight, BookOpen, Zap, Bot, GraduationCap } from 'lucide-react';
+import { Sparkles, ArrowRight, BookOpen, Zap, Bot, GraduationCap, ChevronRight, GraduationCap as LogoIcon } from 'lucide-react';
 
 export default function Home() {
     return (
-        <div className="min-h-screen bg-[#f8fafc] relative overflow-hidden">
-            {/* Ambient Background Elements */}
-            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-brand-200/30 rounded-full blur-[120px]" />
-            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-200/30 rounded-full blur-[120px]" />
+        <div className="min-h-screen bg-[var(--background)] transition-colors duration-500 relative overflow-hidden">
+            {/* Dynamic Background Elements */}
+            <div className="absolute top-[-15%] left-[-10%] w-[60%] h-[60%] bg-brand-500/5 dark:bg-brand-500/10 rounded-full blur-[140px] animate-pulse" />
+            <div className="absolute bottom-[-15%] right-[-10%] w-[60%] h-[60%] bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-[140px] animate-pulse delay-1000" />
 
-            {/* Navigation Placeholder */}
-            <nav className="relative z-10 px-6 py-8 flex justify-between items-center max-w-7xl mx-auto">
-                <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center text-white shadow-lg">
-                        <GraduationCap size={24} />
+            {/* Premium Header */}
+            <nav className="relative z-50 px-8 py-10 flex justify-between items-center max-w-7xl mx-auto">
+                <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-premium-gradient rounded-2xl flex items-center justify-center text-white shadow-xl shadow-brand-500/20 group hover:rotate-12 transition-transform duration-500">
+                        <LogoIcon size={26} />
                     </div>
-                    <span className="text-xl font-extrabold text-gray-900 tracking-tight">Student<span className="text-brand-600">Mentor</span></span>
+                    <span className="text-2xl font-black text-[var(--foreground)] tracking-tighter italic">
+                        Mentor<span className="text-brand-600">AI</span>
+                    </span>
                 </div>
-                <Link href="/login" className="text-sm font-bold text-gray-600 hover:text-brand-600 transition-colors uppercase tracking-widest">
-                    Members Entry
-                </Link>
+                <div className="flex items-center gap-8">
+                    <Link href="/login" className="text-xs font-black text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors uppercase tracking-[0.2em] hidden md:block">
+                        Student Access
+                    </Link>
+                    <Link href="/register" className="btn-primary px-6 py-2.5 h-auto text-xs font-black uppercase tracking-widest leading-none">
+                        Get Started
+                    </Link>
+                </div>
             </nav>
 
-            <div className="relative z-10 flex flex-col items-center justify-center pt-20 pb-32 px-4 text-center">
+            <main className="relative z-10 flex flex-col items-center justify-center pt-24 pb-40 px-6 text-center">
                 {/* Hero Badge */}
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-50 rounded-full border border-brand-100 mb-8 animate-in fade-in zoom-in duration-1000">
-                    <Sparkles size={14} className="text-brand-600" />
-                    <span className="text-[10px] font-extrabold text-brand-700 uppercase tracking-[0.2em]">Next-Gen Learning Platform</span>
+                <div className="inline-flex items-center gap-2.5 px-6 py-2 bg-white dark:bg-gray-800 rounded-full border border-[var(--border-color)] mb-12 shadow-sm animate-in fade-in zoom-in duration-1000">
+                    <Sparkles size={14} className="text-brand-600 animate-pulse" />
+                    <span className="text-[10px] font-black text-brand-700 dark:text-brand-400 uppercase tracking-[0.3em]">Next-Gen Learning OS</span>
                 </div>
 
-                <h1 className="text-6xl md:text-8xl font-black text-gray-900 tracking-tighter mb-8 max-w-4xl leading-[0.9]">
-                    Master your academics with <span className="text-transparent bg-clip-text bg-premium-gradient">AI Intelligence.</span>
+                <h1 className="text-6xl md:text-[7.5rem] font-black text-[var(--foreground)] tracking-tighter mb-10 max-w-5xl leading-[0.85] animate-in slide-in-from-bottom-5 duration-1000">
+                    The Smartest Way <br />
+                    <span className="text-transparent bg-clip-text bg-premium-gradient">To Master Anything.</span>
                 </h1>
 
-                <p className="text-lg md:text-xl text-gray-500 font-medium max-w-2xl mb-12 leading-relaxed">
-                    StudentMentor is your 24/7 personal academic companion. Get instant answers, study plans, and deep conceptual clarity in seconds.
+                <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 font-medium max-w-2xl mb-14 leading-relaxed px-4">
+                    Elevate your academic performance with MentorAI. Get personalized tutoring, deep conceptual insights, and adaptive study plans powered by advanced AI.
                 </p>
 
-                <div className="flex flex-col sm:flex-row gap-6 justify-center w-full max-w-md">
+                <div className="flex flex-col sm:flex-row gap-6 justify-center w-full max-w-lg mb-40">
                     <Link
                         href="/register"
-                        className="btn-primary flex items-center justify-center gap-2 group text-lg px-8 py-5 h-16"
+                        className="btn-primary flex items-center justify-center gap-3 text-lg px-10 py-6 h-18 group"
                     >
-                        Start Learning Free
-                        <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                        Start Journey for Free
+                        <ArrowRight size={22} className="group-hover:translate-x-2 transition-transform duration-300" />
                     </Link>
                     <Link
                         href="/login"
-                        className="flex items-center justify-center px-8 py-5 h-16 bg-white border border-gray-200 rounded-2xl font-bold text-gray-700 hover:bg-gray-50 hover:border-brand-300 transition-all duration-300 shadow-sm"
+                        className="flex items-center justify-center px-10 py-6 h-18 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-2xl font-black text-[var(--foreground)] hover:border-brand-500 dark:hover:border-brand-400 transition-all duration-300 shadow-sm active:scale-95 text-lg"
                     >
-                        Sign In
+                        Member Portal
                     </Link>
                 </div>
 
-                {/* Features Grid */}
-                <div className="mt-32 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full">
-                    <div className="glass-card p-10 rounded-[2.5rem] border border-white/40 text-left hover:scale-[1.02] transition-transform duration-500">
-                        <div className="w-14 h-14 bg-brand-50 rounded-2xl flex items-center justify-center text-brand-600 mb-6 shadow-sm">
-                            <Bot size={28} />
+                {/* Powerful Features */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl w-full">
+                    {[
+                        { icon: Bot, title: "AI Academic Mentor", desc: "A recursive learning companion that adapts to your unique neurobiology and study habits.", color: "bg-brand-50 text-brand-600 dark:bg-brand-600/10 dark:text-brand-400" },
+                        { icon: BookOpen, title: "Deep Insight Engine", desc: "Break down complex multivariable calculus or literal analysis with extreme high-fidelity explanations.", color: "bg-blue-50 text-blue-600 dark:bg-blue-600/10 dark:text-blue-400" },
+                        { icon: Zap, title: "Instant Mastery", desc: "Accelerate your learning curve by 3x with our adaptive feedback loops and cognitive reinforcements.", color: "bg-purple-50 text-purple-600 dark:bg-purple-600/10 dark:text-purple-400" }
+                    ].map((feature, idx) => (
+                        <div key={idx} className="glass-card p-12 rounded-[3.5rem] border border-[var(--border-color)] text-left hover:scale-[1.02] transition-all duration-700 group relative overflow-hidden">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-gray-50 dark:bg-gray-800 rounded-bl-[6rem] -mr-10 -mt-10 group-hover:bg-brand-500/5 transition-colors" />
+                            <div className={`w-16 h-16 ${feature.color} rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:rotate-6 transition-transform`}>
+                                <feature.icon size={32} />
+                            </div>
+                            <h3 className="text-2xl font-black text-[var(--foreground)] mb-4 tracking-tight leading-none italic">{feature.title}</h3>
+                            <p className="text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
+                                {feature.desc}
+                            </p>
                         </div>
-                        <h3 className="text-xl font-extrabold text-gray-900 mb-4 tracking-tight">Personalized AI Tutor</h3>
-                        <p className="text-gray-500 font-medium leading-relaxed">
-                            Context-aware tutoring that understands your specific curriculum and learning pace.
-                        </p>
-                    </div>
-
-                    <div className="glass-card p-10 rounded-[2.5rem] border border-white/40 text-left hover:scale-[1.02] transition-transform duration-500">
-                        <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-6 shadow-sm">
-                            <BookOpen size={28} />
-                        </div>
-                        <h3 className="text-xl font-extrabold text-gray-900 mb-4 tracking-tight">Omni-Subject Support</h3>
-                        <p className="text-gray-500 font-medium leading-relaxed">
-                            From Quantum Physics to Renaissance Art, get expert-level insights across all academic disciplines.
-                        </p>
-                    </div>
-
-                    <div className="glass-card p-10 rounded-[2.5rem] border border-white/40 text-left hover:scale-[1.02] transition-transform duration-500">
-                        <div className="w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600 mb-6 shadow-sm">
-                            <Zap size={28} />
-                        </div>
-                        <h3 className="text-xl font-extrabold text-gray-900 mb-4 tracking-tight">Instant Clarity</h3>
-                        <p className="text-gray-500 font-medium leading-relaxed">
-                            Stop getting stuck. Get high-fidelity explanations that make even the hardest topics feel simple.
-                        </p>
-                    </div>
+                    ))}
                 </div>
 
-                {/* Social Proof Placeholder */}
-                <div className="mt-32 border-t border-gray-200 pt-16 w-full">
-                    <p className="text-[10px] font-extrabold text-gray-400 uppercase tracking-[0.3em] mb-8">Trusted by students worldwide</p>
-                    <div className="flex flex-wrap justify-center gap-12 opacity-30 grayscale">
-                        {/* Mock Logos */}
-                        <span className="font-black text-2xl tracking-tighter">STANFORD</span>
-                        <span className="font-black text-2xl tracking-tighter">HARVARD</span>
-                        <span className="font-black text-2xl tracking-tighter">MIT</span>
-                        <span className="font-black text-2xl tracking-tighter">OXFORD</span>
+                {/* Global Trust */}
+                <div className="mt-40 pt-20 border-t border-[var(--border-color)] w-full max-w-7xl">
+                    <p className="text-[10px] font-black text-gray-400 dark:text-gray-600 uppercase tracking-[0.4em] mb-12 animate-pulse">
+                        INTEGRATED WITH GLOBAL ACADEMIC STANDARDS
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-16 opacity-30 grayscale dark:opacity-20 hover:opacity-50 transition-opacity duration-1000">
+                        <span className="font-black text-3xl tracking-tighter italic">STANFORD</span>
+                        <span className="font-black text-3xl tracking-tighter italic">HARVARD</span>
+                        <span className="font-black text-3xl tracking-tighter italic">MIT</span>
+                        <span className="font-black text-3xl tracking-tighter italic">OXFORD</span>
                     </div>
                 </div>
-            </div>
+            </main>
+
+            {/* Footer */}
+            <footer className="relative z-10 pt-20 pb-10 border-t border-[var(--border-color)] text-center">
+                <p className="text-xs font-bold text-gray-500 dark:text-gray-600 tracking-widest uppercase">
+                    © 2026 MentorAI Labs • Built for the future of learning
+                </p>
+            </footer>
         </div>
     );
 }
