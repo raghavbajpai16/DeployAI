@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { User, Mail, Calendar, LogOut, Loader2, Award, ShieldCheck } from 'lucide-react';
