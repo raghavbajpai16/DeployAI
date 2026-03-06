@@ -23,6 +23,17 @@ export const apiFetch = async <T = any>(
             credentials: 'include',
         });
 
+        // Critical: Handle 401 Unauthorized globally to stop redirect loops
+        if (response.status === 401) {
+            if (typeof window !== 'undefined') {
+                localStorage.removeItem('user');
+                // We don't force a redirect here to allow components to handle it gracefully,
+                // but removing 'user' stops the LoginPage from looping back.
+            }
+            const data = await response.json().catch(() => ({ error: 'Unauthorized' }));
+            return { success: false, error: data.error || 'Authentication required' };
+        }
+
         const data = await response.json();
 
         if (!response.ok) {
