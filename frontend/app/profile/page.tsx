@@ -39,23 +39,23 @@ export default function ProfilePage() {
         <div className="min-h-screen bg-[var(--background)] transition-colors duration-300">
             <Navbar />
 
-            <main className="max-w-4xl mx-auto px-6 pt-32 pb-20">
-                <div className="flex items-center gap-4 mb-10">
+            <main className="max-w-4xl mx-auto px-4 md:px-6 pt-24 md:pt-32 pb-12 md:pb-20">
+                <div className="flex items-center gap-4 mb-8 md:mb-10">
                     <div className="p-3 bg-blue-600 rounded-2xl text-white shadow-lg shadow-blue-500/20">
                         <User size={24} />
                     </div>
                     <div>
-                        <h1 className="text-3xl font-black text-[var(--foreground)] tracking-tight italic">
+                        <h1 className="text-2xl md:text-3xl font-black text-[var(--foreground)] tracking-tight italic leading-none">
                             Personal <span className="text-blue-600">Profile</span>
                         </h1>
-                        <p className="text-gray-500 dark:text-gray-400 font-medium">Manage your student identity</p>
+                        <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 font-medium mt-1">Manage your student identity</p>
                     </div>
                 </div>
 
-                <div className="glass-card border border-[var(--border-color)] rounded-[2.5rem] p-10 shadow-premium relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/5 rounded-bl-[5rem] -mr-8 -mt-8" />
+                <div className="glass-card border border-[var(--border-color)] rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-10 shadow-premium relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-24 md:w-32 h-24 md:h-32 bg-blue-600/5 rounded-bl-[5rem] -mr-8 -mt-8" />
 
-                    <div className="flex flex-col md:flex-row items-center gap-10 mb-10 border-b border-[var(--border-color)] pb-10">
+                    <div className="flex flex-col md:flex-row items-center gap-8 md:gap-10 mb-8 md:mb-10 border-b border-[var(--border-color)] pb-8 md:pb-10">
                         <div className="relative group">
                             <div className="absolute -inset-1 bg-gradient-to-tr from-blue-600 to-brand-600 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-500" />
                             {user.avatar ? (

@@ -114,31 +114,31 @@ export default function DashboardPage() {
         <div className="min-h-screen bg-[var(--background)] transition-colors duration-300">
             <Navbar />
 
-            <main className="max-w-7xl mx-auto px-6 pt-32 pb-20 space-y-12">
+            <main className="max-w-7xl mx-auto px-4 md:px-6 pt-24 md:pt-32 pb-12 md:pb-20 space-y-8 md:space-y-12">
                 {/* Header Section */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                    <div className="flex items-center gap-5">
-                        <div className="p-4 bg-brand-600 rounded-2xl text-white shadow-xl shadow-brand-500/20">
-                            <LayoutDashboard className="w-8 h-8" />
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div className="flex items-center gap-4 md:gap-5">
+                        <div className="p-3 md:p-4 bg-brand-600 rounded-xl md:rounded-2xl text-white shadow-xl shadow-brand-500/20">
+                            <LayoutDashboard className="w-6 h-6 md:w-8 md:h-8" />
                         </div>
                         <div>
-                            <h1 className="text-4xl font-black text-[var(--foreground)] tracking-tight leading-none">
+                            <h1 className="text-3xl md:text-4xl font-black text-[var(--foreground)] tracking-tight leading-none italic">
                                 Insights <span className="text-brand-600">Overview</span>
                             </h1>
-                            <p className="text-gray-500 dark:text-gray-400 font-medium mt-2">Visualizing your academic growth journey</p>
+                            <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 font-medium mt-1 md:mt-2">Visualizing your academic growth journey</p>
                         </div>
                     </div>
 
-                    <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-brand-50 dark:bg-brand-600/10 rounded-full border border-brand-100 dark:border-brand-900/30 text-brand-700 dark:text-brand-400">
-                        <Sparkles size={14} />
-                        <span className="text-[10px] font-extrabold uppercase tracking-widest">Premium Student Portal</span>
+                    <div className="self-start md:self-auto flex items-center gap-2 px-4 py-1.5 md:py-2 bg-brand-50 dark:bg-brand-600/10 rounded-full border border-brand-100 dark:border-brand-900/30 text-brand-700 dark:text-brand-400 shadow-sm animate-pulse">
+                        <Sparkles size={12} className="md:size-14" />
+                        <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest leading-none">Global Learning Standard</span>
                     </div>
                 </div>
 
                 {/* Quick Access Hub */}
-                <section className="space-y-6">
+                <section className="space-y-4 md:space-y-6">
                     <div className="flex items-center justify-between">
-                        <h2 className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Quick Access Hub</h2>
+                        <h2 className="text-[10px] md:text-xs font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Quick Access Hub</h2>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {quickActions.map((action) => {

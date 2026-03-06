@@ -28,7 +28,7 @@ export default function ActivityChart({ data }: ActivityProps) {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="glass-card border border-[var(--border-color)] p-8 rounded-[2.5rem] h-[500px] flex flex-col shadow-premium transition-colors"
+            className="glass-card border border-[var(--border-color)] p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] h-[350px] md:h-[500px] flex flex-col shadow-premium transition-colors"
         >
             <div className="flex items-center justify-between mb-8">
                 <h3 className="text-xl font-black text-[var(--foreground)] tracking-tight">Weekly Activity</h3>

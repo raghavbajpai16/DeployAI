@@ -111,49 +111,49 @@ export default function GoalsPage() {
         <div className="min-h-screen bg-[var(--background)] transition-colors duration-300">
             <Navbar />
 
-            <main className="max-w-7xl mx-auto px-6 py-12 pt-32">
+            <main className="max-w-7xl mx-auto px-4 md:px-6 pt-24 md:pt-32 pb-12 md:pb-20">
                 {/* Stats Summary */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                    <div className="glass-card p-8 rounded-[2.5rem] flex items-center gap-6">
-                        <div className="w-16 h-16 bg-brand-50 dark:bg-brand-600/10 rounded-3xl flex items-center justify-center text-brand-600 dark:text-brand-400">
-                            <Target size={32} />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16">
+                    <div className="glass-card p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] flex items-center gap-4 md:gap-6">
+                        <div className="w-12 h-12 md:w-16 md:h-16 bg-brand-50 dark:bg-brand-600/10 rounded-2xl md:rounded-3xl flex items-center justify-center text-brand-600 dark:text-brand-400">
+                            <Target size={24} className="md:size-[32px]" />
                         </div>
                         <div>
-                            <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Total Goals</p>
-                            <h3 className="text-3xl font-black text-[var(--foreground)]">{goals.length}</h3>
+                            <p className="text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Total Goals</p>
+                            <h3 className="text-2xl md:text-3xl font-black text-[var(--foreground)]">{goals.length}</h3>
                         </div>
                     </div>
 
-                    <div className="glass-card p-8 rounded-[2.5rem] flex items-center gap-6">
-                        <div className="w-16 h-16 bg-green-50 dark:bg-green-600/10 rounded-3xl flex items-center justify-center text-green-600 dark:text-green-400">
-                            <Trophy size={32} />
+                    <div className="glass-card p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] flex items-center gap-4 md:gap-6">
+                        <div className="w-12 h-12 md:w-16 md:h-16 bg-green-50 dark:bg-green-600/10 rounded-2xl md:rounded-3xl flex items-center justify-center text-green-600 dark:text-green-400">
+                            <Trophy size={24} className="md:size-[32px]" />
                         </div>
                         <div>
-                            <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Completed</p>
-                            <h3 className="text-3xl font-black text-[var(--foreground)]">{completedGoals}</h3>
+                            <p className="text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Completed</p>
+                            <h3 className="text-2xl md:text-3xl font-black text-[var(--foreground)]">{completedGoals}</h3>
                         </div>
                     </div>
 
-                    <div className="glass-card p-8 rounded-[2.5rem] flex items-center gap-6">
-                        <div className="w-16 h-16 bg-orange-50 dark:bg-orange-600/10 rounded-3xl flex items-center justify-center text-orange-600 dark:text-orange-400">
-                            <TrendingUp size={32} />
+                    <div className="glass-card p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] flex items-center gap-4 md:gap-6">
+                        <div className="w-12 h-12 md:w-16 md:h-16 bg-orange-50 dark:bg-orange-600/10 rounded-2xl md:rounded-3xl flex items-center justify-center text-orange-600 dark:text-orange-400">
+                            <TrendingUp size={24} className="md:size-[32px]" />
                         </div>
                         <div>
-                            <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Avg Progress</p>
-                            <h3 className="text-3xl font-black text-[var(--foreground)]">{avgProgress}%</h3>
+                            <p className="text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Avg Progress</p>
+                            <h3 className="text-2xl md:text-3xl font-black text-[var(--foreground)]">{avgProgress}%</h3>
                         </div>
                     </div>
                 </div>
 
                 {/* Section Header */}
-                <div className="flex justify-between items-center mb-10">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
                     <div>
-                        <h2 className="text-3xl font-black text-[var(--foreground)] tracking-tight mb-1">Active Milestones</h2>
-                        <p className="text-gray-500 dark:text-gray-400 font-medium">Track and update your learning objectives</p>
+                        <h2 className="text-2xl md:text-3xl font-black text-[var(--foreground)] tracking-tight mb-1 italic">Active <span className="text-brand-600">Milestones</span></h2>
+                        <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 font-medium">Track and update your learning objectives</p>
                     </div>
                     <button
                         onClick={() => handleOpenModal()}
-                        className="btn-primary flex items-center gap-2 h-12 px-6"
+                        className="btn-primary flex items-center justify-center gap-2 h-12 px-8 w-full md:w-auto"
                     >
                         <Plus size={20} />
                         Define Goal
