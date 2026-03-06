@@ -29,6 +29,8 @@ export default function ChatPage() {
                 localStorage.setItem('user', JSON.stringify(response.data.user));
                 fetchConversations();
             } else {
+                // Critical: Clear local storage to break the redirect loop
+                localStorage.removeItem('user');
                 router.push('/login');
             }
             setLoading(false);
