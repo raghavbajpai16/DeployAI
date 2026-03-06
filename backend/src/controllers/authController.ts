@@ -31,18 +31,33 @@ export const register = async (req: AuthRequest, res: Response) => {
             throw new Error('JWT_SECRET is not defined');
         }
 
+        // Robustly handle JWT_EXPIRY string vs number (numeric strings treated as milliseconds by jwt.sign, but we want seconds)
+        const expiry = process.env.JWT_EXPIRY || '86400';
+        const formattedExpiry = isNaN(Number(expiry)) ? expiry : Number(expiry);
+
         const accessToken = jwt.sign(
             { id: user._id.toString(), email: user.email },
             secret,
-            { expiresIn: process.env.JWT_EXPIRY as any }
+            { expiresIn: formattedExpiry as any }
         );
+
+        // Calculate maxAge for cookies (always in ms)
+        // If it's a number, multiply. If a string (like '24h'), default to a safe value or implement basic conversion.
+        let maxAgeMs = 86400 * 1000;
+        if (!isNaN(Number(expiry))) {
+            maxAgeMs = Number(expiry) * 1000;
+        } else if (expiry.endsWith('h')) {
+            maxAgeMs = parseInt(expiry) * 60 * 60 * 1000;
+        } else if (expiry.endsWith('d')) {
+            maxAgeMs = parseInt(expiry) * 24 * 60 * 60 * 1000;
+        }
 
         // Task 1: Enforce Cookie-Only JWT Strategy
         res.cookie('token', accessToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'none',
-            maxAge: Number(process.env.JWT_EXPIRY) * 1000
+            maxAge: maxAgeMs
         });
 
         res.status(201).json({
@@ -84,18 +99,33 @@ export const login = async (req: AuthRequest, res: Response) => {
             throw new Error('JWT_SECRET is not defined');
         }
 
+        // Robustly handle JWT_EXPIRY string vs number (numeric strings treated as milliseconds by jwt.sign, but we want seconds)
+        const expiry = process.env.JWT_EXPIRY || '86400';
+        const formattedExpiry = isNaN(Number(expiry)) ? expiry : Number(expiry);
+
         const accessToken = jwt.sign(
             { id: user._id.toString(), email: user.email },
             secret,
-            { expiresIn: process.env.JWT_EXPIRY as any }
+            { expiresIn: formattedExpiry as any }
         );
+
+        // Calculate maxAge for cookies (always in ms)
+        // If it's a number, multiply. If a string (like '24h'), default to a safe value or implement basic conversion.
+        let maxAgeMs = 86400 * 1000;
+        if (!isNaN(Number(expiry))) {
+            maxAgeMs = Number(expiry) * 1000;
+        } else if (expiry.endsWith('h')) {
+            maxAgeMs = parseInt(expiry) * 60 * 60 * 1000;
+        } else if (expiry.endsWith('d')) {
+            maxAgeMs = parseInt(expiry) * 24 * 60 * 60 * 1000;
+        }
 
         // Task 1: Enforce Cookie-Only JWT Strategy
         res.cookie('token', accessToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'none',
-            maxAge: Number(process.env.JWT_EXPIRY) * 1000
+            maxAge: maxAgeMs
         });
 
         res.json({
@@ -133,18 +163,32 @@ export const googleCallback = (req: any, res: Response) => {
             throw new Error('JWT_SECRET is not defined');
         }
 
+        // Robustly handle JWT_EXPIRY string vs number
+        const expiry = process.env.JWT_EXPIRY || '86400';
+        const formattedExpiry = isNaN(Number(expiry)) ? expiry : Number(expiry);
+
         const accessToken = jwt.sign(
             { id: user._id.toString(), email: user.email },
             secret,
-            { expiresIn: process.env.JWT_EXPIRY as any }
+            { expiresIn: formattedExpiry as any }
         );
+
+        // Calculate maxAge for cookies
+        let maxAgeMs = 86400 * 1000;
+        if (!isNaN(Number(expiry))) {
+            maxAgeMs = Number(expiry) * 1000;
+        } else if (expiry.endsWith('h')) {
+            maxAgeMs = parseInt(expiry) * 60 * 60 * 1000;
+        } else if (expiry.endsWith('d')) {
+            maxAgeMs = parseInt(expiry) * 24 * 60 * 60 * 1000;
+        }
 
         // Task 1 & 7: Enforce Cookie-Only JWT Strategy + Redirect to Dashboard
         res.cookie('token', accessToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'none',
-            maxAge: Number(process.env.JWT_EXPIRY) * 1000
+            maxAge: maxAgeMs
         });
 
         res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
