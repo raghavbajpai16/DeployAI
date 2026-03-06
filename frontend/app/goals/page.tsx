@@ -15,6 +15,7 @@ import {
     TrendingUp,
     LogOut
 } from 'lucide-react';
+import Navbar from '@/components/Navbar';
 
 export default function GoalsPage() {
     const router = useRouter();
@@ -92,12 +93,6 @@ export default function GoalsPage() {
         setIsModalOpen(false);
     };
 
-    const handleLogout = async () => {
-        await apiFetch('/auth/logout', { method: 'POST' });
-        localStorage.removeItem('user');
-        router.push('/login');
-    };
-
     const completedGoals = goals.filter(g => g.progress >= 100).length;
     const avgProgress = goals.length > 0
         ? Math.round(goals.reduce((acc, g) => acc + g.progress, 0) / goals.length)
@@ -114,35 +109,9 @@ export default function GoalsPage() {
 
     return (
         <div className="min-h-screen bg-[#f8fafc]">
-            {/* Nav Header */}
-            <header className="sticky top-0 z-40 bg-white/70 backdrop-blur-xl border-b border-gray-100 px-6 py-4">
-                <div className="max-w-7xl mx-auto flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        <button
-                            onClick={() => router.push('/chat')}
-                            className="p-2 hover:bg-gray-100 rounded-xl transition-colors text-gray-500"
-                        >
-                            <ArrowLeft size={20} />
-                        </button>
-                        <div className="h-8 w-[1px] bg-gray-200" />
-                        <div>
-                            <h1 className="text-xl font-extrabold text-gray-900 tracking-tight">Academic <span className="text-brand-600">Goals</span></h1>
-                            {user && <p className="text-[10px] font-bold text-brand-600/60 uppercase tracking-wide">{user.firstName}'s Journey</p>}
-                        </div>
-                    </div>
+            <Navbar />
 
-                    <div className="flex gap-4">
-                        <button
-                            onClick={handleLogout}
-                            className="p-2 text-gray-400 hover:text-red-500 transition-colors"
-                        >
-                            <LogOut size={20} />
-                        </button>
-                    </div>
-                </div>
-            </header>
-
-            <main className="max-w-7xl mx-auto px-6 py-12">
+            <main className="max-w-7xl mx-auto px-6 py-12 pt-32">
                 {/* Stats Summary */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
                     <div className="glass-card p-8 rounded-[2.5rem] flex items-center gap-6">

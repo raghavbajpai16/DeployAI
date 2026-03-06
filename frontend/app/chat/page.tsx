@@ -12,7 +12,8 @@ interface Conversation {
     messageCount: number;
 }
 
-import { LogOut, LayoutDashboard, MessageSquarePlus, Clock, Search, Target, User as UserIcon } from 'lucide-react';
+import { MessageSquarePlus, Clock, Search } from 'lucide-react';
+import Navbar from '@/components/Navbar';
 
 export default function ChatPage() {
     const router = useRouter();
@@ -46,12 +47,6 @@ export default function ChatPage() {
         }
     };
 
-    const handleLogout = async () => {
-        await apiFetch('/auth/logout', { method: 'POST' });
-        localStorage.removeItem('user');
-        router.push('/login');
-    };
-
     if (loading || !user) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-background gap-4">
@@ -63,53 +58,7 @@ export default function ChatPage() {
 
     return (
         <div className="min-h-screen bg-[#f8fafc] flex flex-col">
-            {/* Nav Header */}
-            <header className="sticky top-0 z-50 bg-white/70 backdrop-blur-xl border-b border-gray-100 px-6 py-4">
-                <div className="max-w-[1600px] mx-auto flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand-500/20">
-                            <LayoutDashboard size={20} />
-                        </div>
-                        <div>
-                            <h1 className="text-xl font-extrabold text-gray-900 tracking-tight">
-                                Student<span className="text-brand-600">Mentor</span>
-                            </h1>
-                            {user && <p className="text-[10px] font-bold text-brand-600/60 uppercase tracking-wide">Academic Portal • {user.firstName}</p>}
-                        </div>
-                    </div>
-
-                    <div className="flex items-center gap-6">
-                        <button
-                            onClick={() => router.push('/dashboard')}
-                            className="flex items-center gap-2 px-4 py-2 text-gray-500 font-bold text-sm hover:text-brand-600 transition-colors group"
-                        >
-                            <LayoutDashboard size={18} className="group-hover:scale-110 transition-transform" />
-                            Dashboard
-                        </button>
-                        <button
-                            onClick={() => router.push('/goals')}
-                            className="flex items-center gap-2 px-4 py-2 text-gray-500 font-bold text-sm hover:text-brand-600 transition-colors group"
-                        >
-                            <Target size={18} className="group-hover:scale-110 transition-transform" />
-                            Academic Goals
-                        </button>
-                        <button
-                            onClick={() => router.push('/profile')}
-                            className="flex items-center gap-2 px-4 py-2 text-gray-500 font-bold text-sm hover:text-brand-600 transition-colors group"
-                        >
-                            <UserIcon size={18} className="group-hover:scale-110 transition-transform" />
-                            Profile
-                        </button>
-                        <button
-                            onClick={handleLogout}
-                            className="flex items-center gap-2 px-4 py-2 text-gray-500 font-bold text-sm hover:text-red-500 transition-colors group"
-                        >
-                            <LogOut size={18} className="group-hover:-translate-x-1 transition-transform" />
-                            Sign Out
-                        </button>
-                    </div>
-                </div>
-            </header>
+            <Navbar />
 
             <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-8 flex gap-8">
                 {/* Modern Sidebar */}
